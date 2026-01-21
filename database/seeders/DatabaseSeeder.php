@@ -13,6 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Crear categorías primero
+        $this->call(CategorySeeder::class);
+        
+        // Luego crear productos (dependen de las categorías)
+        $this->call(ProductSeeder::class);
+        
         // \App\Models\User::factory(10)->create();
     }
 }
