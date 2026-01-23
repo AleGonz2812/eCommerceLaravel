@@ -21,12 +21,15 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ Diseño responsive (mobile-first)
 - ✅ Modo claro/oscuro con persistencia
 - ✅ Bootstrap 5.3 + Bootstrap Icons
+- ✅ **Sistema de autenticación (Login/Registro)**
+- ✅ **Gestión de sesiones de usuario**
+- ✅ **Rutas protegidas con middleware**
 
 ### Estructura MVC
 
 - **Modelos**: Product, Category, User
-- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías
-- **Controladores**: HomeController, ProductController, CategoryController, CartController
+- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías, **Auth (Login/Registro)**
+- **Controladores**: HomeController, ProductController, CategoryController, CartController, **AuthController**
 
 ---
 
@@ -43,18 +46,21 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ Vista de ficha individual de producto
 - ✅ Filtrado por categorías
 - ✅ Sistema de búsqueda
+- ✅ **Sistema de autenticación completo**
+- ✅ **Middleware de protección de rutas**
 
-### ⏳ NIVEL INTERMEDIO - PENDIENTE
-- Gestión de sesiones de usuario
+### ⏳ NIVEL INTERMEDIO - EN PROGRESO
+- ✅ **Autenticación de usuarios (Login/Registro)**
+- ✅ Gestión de sesiones de usuario
 - Carrito de compras (añadir/eliminar productos)
 - Cálculo del total de la compra
 - Gestión de imágenes
 
 ### ⏳ NIVEL EXPERTO - PENDIENTE
 - Sistema de pedidos (orders, order_items)
-- Autenticación de usuarios
 - Proceso de checkout completo
 - Historial de pedidos
+- Panel de administración
 
 ---
 
@@ -191,6 +197,7 @@ eCommerceLaravel/
 │   │   │   ├── HomeController.php          # Página de inicio
 │   │   │   ├── ProductController.php       # Listado, búsqueda, detalle
 │   │   │   ├── CategoryController.php      # Filtrado por categoría
+│   │   │   ├── AuthController.php          # Login, Registro, Logout
 │   │   │   └── CartController.php          # Carrito (pendiente)
 │   │   └── ViewComposers/
 │   │       └── NavigationComposer.php      # Comparte categorías globalmente
@@ -202,6 +209,7 @@ eCommerceLaravel/
 │       └── AppServiceProvider.php          # Registro de ViewComposer
 ├── database/
 │   ├── migrations/
+│   │   ├── create_users_table.php          # Tabla de usuarios
 │   │   ├── create_categories_table.php
 │   │   └── create_products_table.php
 │   └── seeders/
@@ -218,6 +226,9 @@ eCommerceLaravel/
 │       │   ├── header.blade.php            # Cabecera
 │       │   ├── navbar.blade.php            # Navegación
 │       │   └── footer.blade.php            # Pie de página
+│       ├── auth/
+│       │   ├── login.blade.php             # Formulario de login
+│       │   └── register.blade.php          # Formulario de registro
 │       ├── products/
 │       │   ├── index.blade.php             # Catálogo
 │       │   └── show.blade.php              # Ficha de producto
@@ -276,7 +287,10 @@ eCommerceLaravel/
 | `/products/search?q={query}` | GET | Búsqueda de productos |
 | `/products/{slug}` | GET | Ficha detallada de un producto |
 | `/category/{slug}` | GET | Productos filtrados por categoría |
-| `/cart` | GET | Ver carrito (pendiente implementación) |
+| `/register` | GET/POST | Formulario y proceso de registro |
+| `/login` | GET/POST | Formulario y proceso de login |
+| `/logout` | POST | Cerrar sesión (requiere auth) |
+| `/cart` | GET | Ver carrito (requiere auth - pendiente) |
 
 ---
 
@@ -292,11 +306,85 @@ eCommerceLaravel/
 - ✅ Persistencia con localStorage
 - ✅ Iconos dinámicos (sol/luna)
 
+### Sistema de Autenticación
+- ✅ Formularios de login y registro con validación
+- ✅ Mensajes flash de éxito/error
+- ✅ Dropdown de usuario en navbar y header
+- ✅ Opción "Recordarme" en login
+- ✅ Protección de rutas con middleware
+- ✅ Logout seguro con token CSRF
+
 ### Componentes
 - ✅ Cards de productos con hover effect
 - ✅ Badges de categoría y destacados
 - ✅ Sistema de paginación
 - ✅ Breadcrumbs en ficha de producto
 - ✅ Indicadores de stock (disponible/agotado)
+- ✅ Dropdowns de usuario autenticado
+- ✅ Alertas dismissibles
+
+---
+
+## 🔐 Sistema de Autenticación
+
+### Características Implementadas
+
+**Registro de Usuarios:**
+- Validación de datos (nombre, email único, contraseña mínimo 8 caracteres)
+- Confirmación de contraseña
+- Hash seguro de contraseñas con bcrypt
+- Login automático después del registro
+- Mensajes de feedback al usuario
+
+**Login:**
+- Validación de credenciales
+- Opción "Recordarme" para sesiones persistentes
+- Regeneración de sesión por seguridad
+- Redirección inteligente a página anterior
+- Mensajes de error personalizados
+
+**Gestión de Sesión:**
+- Dropdown con nombre de usuario en navbar
+- Dropdown con opciones en header
+- Logout seguro con invalidación de sesión
+- Protección CSRF en formularios
+
+**Rutas Protegidas:**
+- Middleware `auth` para rutas que requieren autenticación
+- Middleware `guest` para evitar acceso a login/registro si ya está autenticado
+- Redirección automática a login si se intenta acceder sin autenticación
+
+### Uso del Sistema
+
+**Registrarse:**
+1. Hacer clic en "Registrarse" en el navbar o header
+2. Completar el formulario con nombre, email y contraseña
+3. Se crea la cuenta y se inicia sesión automáticamente
+
+**Iniciar Sesión:**
+1. Hacer clic en "Iniciar Sesión" en el navbar o header
+2. Ingresar email y contraseña
+3. Opcionalmente marcar "Recordarme"
+4. Se inicia sesión y redirige a la página de inicio
+
+**Cerrar Sesión:**
+1. Hacer clic en el dropdown del usuario (navbar o header)
+2. Seleccionar "Cerrar Sesión"
+3. Se cierra la sesión de forma segura
+
+---
+
+## 📱 Navegación Dinámica
+
+El sistema ahora muestra diferentes opciones según el estado de autenticación:
+
+**Usuario No Autenticado:**
+- Icono de usuario en header → Link a Login
+- Navbar → "Iniciar Sesión" y "Registrarse"
+
+**Usuario Autenticado:**
+- Icono de usuario en header → Dropdown con nombre y opciones
+- Navbar → Dropdown con nombre, "Mis Pedidos" y "Cerrar Sesión"
+- Acceso al carrito de compras (próximamente funcional)
 
 ---

@@ -33,9 +33,44 @@
                     </span>
                     
                     <!-- User Account -->
-                    <a href="#" class="text-decoration-none text-body" title="Mi cuenta">
-                        <i class="bi bi-person-circle fs-4"></i>
-                    </a>
+                    @auth
+                        <div class="dropdown">
+                            <a href="#" class="text-decoration-none text-body dropdown-toggle" 
+                               id="userHeaderDropdown" 
+                               data-bs-toggle="dropdown" 
+                               aria-expanded="false" 
+                               title="Mi cuenta">
+                                <i class="bi bi-person-circle fs-4"></i>
+                                <small class="d-none d-lg-inline ms-1">{{ Auth::user()->name }}</small>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userHeaderDropdown">
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        <i class="bi bi-person"></i> {{ Auth::user()->name }}
+                                    </h6>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-bag-check"></i> Mis Pedidos
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @else
+                        <a href="{{ route('login') }}" class="text-decoration-none text-body" title="Iniciar sesión">
+                            <i class="bi bi-person-circle fs-4"></i>
+                        </a>
+                    @endauth
                     
                     <!-- Shopping Cart -->
                     <a href="{{ route('cart.index') }}" class="text-decoration-none text-body position-relative" title="Carrito">
