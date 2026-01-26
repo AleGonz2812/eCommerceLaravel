@@ -41,4 +41,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relación: Un usuario puede tener muchos items en el carrito
+     * (Se implementará en NIVEL INTERMEDIO)
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    /**
+     * Relación: Un usuario puede tener muchos pedidos
+     * (Se implementará en NIVEL EXPERTO)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    // public function orders()
+    // {
+    //     return $this->hasMany(Order::class);
+    // }
 }

@@ -31,6 +31,21 @@
             <!-- Enlaces adicionales -->
             <ul class="navbar-nav">
                 @auth
+                    <!-- Carrito de compras -->
+                    <li class="nav-item">
+                        <a class="nav-link position-relative {{ request()->is('cart') ? 'active' : '' }}" href="{{ route('cart.index') }}">
+                            <i class="bi bi-cart3"></i> Carrito
+                            @php
+                                $cartCount = \App\Http\Controllers\CartController::getCartCount();
+                            @endphp
+                            @if($cartCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+                    
                     <!-- Usuario autenticado -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

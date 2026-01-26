@@ -47,6 +47,10 @@ Route::middleware('auth')->group(function () {
     // Cerrar sesión
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
-    // Ruta del carrito (temporal - se implementará en NIVEL INTERMEDIO)
+    // Rutas del carrito
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    Route::patch('/cart/update/{cartItem}', [CartController::class, 'updateQuantity'])->name('cart.update');
+    Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 });

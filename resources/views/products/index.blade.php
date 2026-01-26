@@ -49,11 +49,25 @@
                     </div>
                     
                     @if($product->stock > 0)
-                        <small class="text-success mt-2">
+                        <div class="mt-3 d-grid gap-2">
+                            @auth
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                                        <i class="bi bi-cart-plus"></i> Añadir al Carrito
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-box-arrow-in-right"></i> Inicia Sesión
+                                </a>
+                            @endauth
+                        </div>
+                        <small class="text-success mt-2 d-block">
                             <i class="bi bi-check-circle"></i> {{ $product->stock }} disponibles
                         </small>
                     @else
-                        <small class="text-danger mt-2">
+                        <small class="text-danger mt-2 d-block">
                             <i class="bi bi-x-circle"></i> Agotado
                         </small>
                     @endif

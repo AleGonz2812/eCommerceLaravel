@@ -42,9 +42,18 @@
                     <i class="bi bi-check-circle"></i> <strong>En stock:</strong> {{ $product->stock }} unidades disponibles
                 </div>
                 
-                <button class="btn btn-primary btn-lg">
-                    <i class="bi bi-cart-plus"></i> Añadir al Carrito
-                </button>
+                @auth
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-cart-plus"></i> Añadir al Carrito
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-box-arrow-in-right"></i> Inicia Sesión para Comprar
+                    </a>
+                @endauth
             @else
                 <div class="alert alert-danger">
                     <i class="bi bi-x-circle"></i> <strong>Agotado</strong> - Producto no disponible

@@ -7,9 +7,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
 {
+
+    /**
+     * Número máximo de intentos de login permitidos
+     *
+     * @var int
+     */
+    protected $maxAttempts = 5;
+
+    /**
+     * Tiempo de bloqueo en minutos después de demasiados intentos
+     *
+     * @var int
+     */
+    protected $decayMinutes = 15;
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'email';
+    }
     /**
      * Mostrar formulario de registro
      *
@@ -91,15 +116,33 @@ class AuthController extends Controller
             'password.required' => 'La contraseña es obligatoria',
         ]);
 
+        // Protección contra fuerza bruta (throttling)
+        $key = strtolower($request->input('email')).'|'.$request->ip();
+        
+        if (RateLimiter::tooManyAttempts($key, $this->maxAttempts)) {
+            $seconds = RateLimiter::availableIn($key);
+            return back()->withErrors([
+                'email' => 'Demasiados intentos de login. Intenta de nuevo en ' . ceil($seconds / 60) . ' minutos.',
+            ])->withInput($request->only('email'));
+        }
+
         // Intentar login
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+            
+            // Limpiar intentos de login fallidos
+            $key = strtolower($request->input('email')).'|'.$request->ip();
+            RateLimiter::clear($key);
 
             return redirect()->intended(route('home'))
                 ->with('success', '¡Bienvenido de nuevo, ' . Auth::user()->name . '!');
         }
+
+        // Incrementar intentos de login fallidos
+        $key = strtolower($request->input('email')).'|'.$request->ip();
+        RateLimiter::hit($key, $this->decayMinutes * 60);
 
         // Si falla el login
         return back()->withErrors([

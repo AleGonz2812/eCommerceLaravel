@@ -2,13 +2,13 @@
 
 eCommerce tipo G2A para venta de juegos, suscripciones, keys y productos digitales.
 
-**Estado:** ✅ NIVEL BÁSICO COMPLETADO
+**Estado:** ✅ NIVEL INTERMEDIO COMPLETADO
 
 ---
 
 ## 📋 Descripción del Proyecto
 
-Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplicando la estructura MVC con **Blade** (vistas) y **Eloquent** (ORM). Sistema de catálogo de productos digitales con filtrado por categorías, búsqueda y gestión de productos.
+Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplicando la estructura MVC con **Blade** (vistas) y **Eloquent** (ORM). Sistema de catálogo de productos digitales con filtrado por categorías, búsqueda, gestión de productos y **carrito de compras funcional**.
 
 ### Características Implementadas
 
@@ -24,12 +24,18 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ **Sistema de autenticación (Login/Registro)**
 - ✅ **Gestión de sesiones de usuario**
 - ✅ **Rutas protegidas con middleware**
+- ✅ **Carrito de compras completo**
+- ✅ **Añadir/Eliminar productos del carrito**
+- ✅ **Control de cantidades y stock**
+- ✅ **Cálculo de subtotales, IVA y total**
+- ✅ **Contador de carrito en navbar**
+- ✅ **Gestión de imágenes con Storage**
 
 ### Estructura MVC
 
-- **Modelos**: Product, Category, User
-- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías, **Auth (Login/Registro)**
-- **Controladores**: HomeController, ProductController, CategoryController, CartController, **AuthController**
+- **Modelos**: Product, Category, User, CartItem
+- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías, Auth (Login/Registro), **Carrito**
+- **Controladores**: HomeController, ProductController, CategoryController, **CartController**, AuthController
 
 ---
 
@@ -49,12 +55,18 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ **Sistema de autenticación completo**
 - ✅ **Middleware de protección de rutas**
 
-### ⏳ NIVEL INTERMEDIO - EN PROGRESO
+### ✅ NIVEL INTERMEDIO - COMPLETADO
 - ✅ **Autenticación de usuarios (Login/Registro)**
-- ✅ Gestión de sesiones de usuario
-- Carrito de compras (añadir/eliminar productos)
-- Cálculo del total de la compra
-- Gestión de imágenes
+- ✅ **Gestión de sesiones de usuario**
+- ✅ **Carrito de compras completo**
+- ✅ **Añadir y eliminar productos del carrito**
+- ✅ **Actualizar cantidades de productos**
+- ✅ **Vaciar carrito completo**
+- ✅ **Cálculo de subtotal, IVA y total**
+- ✅ **Control de stock en tiempo real**
+- ✅ **Validación de cantidades máximas**
+- ✅ **Contador de items en navbar**
+- ✅ **Gestión de imágenes con Storage Link**
 
 ### ⏳ NIVEL EXPERTO - PENDIENTE
 - Sistema de pedidos (orders, order_items)
@@ -139,7 +151,7 @@ php artisan migrate:fresh --seed
 **Resultado esperado:**
 - ✅ 5 categorías creadas
 - ✅ 23 productos creados
-- ✅ Tablas: users, categories, products, failed_jobs, password_resets, personal_access_tokens
+- ✅ Tablas: users, categories, products, cart_items, failed_jobs, password_resets, personal_access_tokens
 
 ### 8️ Crear enlace simbólico para imágenes
 
@@ -198,12 +210,13 @@ eCommerceLaravel/
 │   │   │   ├── ProductController.php       # Listado, búsqueda, detalle
 │   │   │   ├── CategoryController.php      # Filtrado por categoría
 │   │   │   ├── AuthController.php          # Login, Registro, Logout
-│   │   │   └── CartController.php          # Carrito (pendiente)
+│   │   │   └── CartController.php          # Carrito completo
 │   │   └── ViewComposers/
 │   │       └── NavigationComposer.php      # Comparte categorías globalmente
 │   ├── Models/
 │   │   ├── Category.php                    # Modelo de categorías
 │   │   ├── Product.php                     # Modelo de productos
+│   │   ├── CartItem.php                    # Modelo de items del carrito
 │   │   └── User.php                        # Modelo de usuarios
 │   └── Providers/
 │       └── AppServiceProvider.php          # Registro de ViewComposer
@@ -211,7 +224,8 @@ eCommerceLaravel/
 │   ├── migrations/
 │   │   ├── create_users_table.php          # Tabla de usuarios
 │   │   ├── create_categories_table.php
-│   │   └── create_products_table.php
+│   │   ├── create_products_table.php
+│   │   └── create_cart_items_table.php     # Tabla de carrito
 │   └── seeders/
 │       ├── CategorySeeder.php              # 5 categorías
 │       └── ProductSeeder.php               # 23 productos
@@ -229,6 +243,8 @@ eCommerceLaravel/
 │       ├── auth/
 │       │   ├── login.blade.php             # Formulario de login
 │       │   └── register.blade.php          # Formulario de registro
+│       ├── cart/
+│       │   └── index.blade.php             # Vista del carrito
 │       ├── products/
 │       │   ├── index.blade.php             # Catálogo
 │       │   └── show.blade.php              # Ficha de producto
@@ -273,8 +289,22 @@ eCommerceLaravel/
 | created_at | TIMESTAMP | Fecha de creación |
 | updated_at | TIMESTAMP | Fecha de actualización |
 
+### Tabla: `cart_items`
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| id | BIGINT | Clave primaria |
+| user_id | BIGINT | FK a users |
+| product_id | BIGINT | FK a products |
+| quantity | INTEGER | Cantidad de unidades |
+| price | DECIMAL(10,2) | Precio al agregar al carrito |
+| created_at | TIMESTAMP | Fecha de creación |
+| updated_at | TIMESTAMP | Fecha de actualización |
+
 **Relaciones:**
 - `categories` → `products` (1:N)
+- `users` → `cart_items` (1:N)
+- `products` → `cart_items` (1:N)
+- **Índice único:** `user_id` + `product_id` (un usuario no puede tener el mismo producto duplicado)
 
 ---
 
@@ -290,7 +320,11 @@ eCommerceLaravel/
 | `/register` | GET/POST | Formulario y proceso de registro |
 | `/login` | GET/POST | Formulario y proceso de login |
 | `/logout` | POST | Cerrar sesión (requiere auth) |
-| `/cart` | GET | Ver carrito (requiere auth - pendiente) |
+| `/cart` | GET | Ver carrito de compras (requiere auth) |
+| `/cart/add/{product}` | POST | Añadir producto al carrito (requiere auth) |
+| `/cart/update/{cartItem}` | PATCH | Actualizar cantidad de producto (requiere auth) |
+| `/cart/remove/{cartItem}` | DELETE | Eliminar producto del carrito (requiere auth) |
+| `/cart/clear` | DELETE | Vaciar todo el carrito (requiere auth) |
 
 ---
 
@@ -374,6 +408,103 @@ eCommerceLaravel/
 
 ---
 
+## � Sistema de Carrito de Compras
+
+### Características Implementadas
+
+**Gestión del Carrito:**
+- Añadir productos al carrito con control de stock
+- Actualizar cantidades de productos
+- Eliminar productos individuales
+- Vaciar carrito completo
+- Cálculo automático de totales
+- Contador de items en navbar
+- Persistencia en base de datos por usuario
+
+**Validaciones de Seguridad:**
+- Solo usuarios autenticados pueden acceder
+- Verificación de stock en tiempo real
+- Prevención de cantidades mayores al stock disponible
+- Protección contra duplicados (índice único)
+- Verificación de ownership (usuarios solo ven su carrito)
+- Tokens CSRF en todos los formularios
+
+**Control de Stock:**
+- Validación al agregar productos
+- Validación al actualizar cantidades
+- Muestra stock disponible en vista
+- Previene overselling
+- Input con límite máximo según stock
+
+### Uso del Carrito
+
+**Agregar Productos:**
+1. Navegar por el catálogo (Home, Productos, Categorías)
+2. Click en "Añadir al Carrito" (requiere login)
+3. Si el producto ya existe, incrementa cantidad automáticamente
+4. Mensaje de confirmación
+
+**Ver Carrito:**
+1. Click en icono "Carrito" en navbar (muestra contador)
+2. Acceder a `/cart`
+3. Ver listado completo con imágenes, precios, cantidades
+
+**Actualizar Cantidades:**
+1. En vista del carrito, cambiar número en input
+2. Se actualiza automáticamente al cambiar valor
+3. Validación de stock en tiempo real
+
+**Eliminar Productos:**
+1. Click en botón de basura (eliminar individual)
+2. O usar botón "Vaciar Carrito" (eliminar todos)
+3. Confirmación antes de eliminar
+
+**Cálculos:**
+- Precio unitario por producto
+- Subtotal por producto (precio × cantidad)
+- Total del carrito (suma de todos los subtotales)
+- Moneda: Euro (€)
+
+### Estructura Técnica del Carrito
+
+**Tabla `cart_items`:**
+```sql
+- id (bigint, PK)
+- user_id (FK a users, cascade delete)
+- product_id (FK a products, cascade delete)
+- quantity (integer, default 1)
+- price (decimal, precio al agregar)
+- timestamps
+- UNIQUE(user_id, product_id) -- Previene duplicados
+```
+
+**Modelo CartItem:**
+- Relaciones: belongsTo(User), belongsTo(Product)
+- Accessor: getSubtotalAttribute() → price × quantity
+- Fillable: user_id, product_id, quantity, price
+- Casts: quantity → integer, price → decimal:2
+
+**CartController:**
+- `index()`: Mostrar carrito con eager loading
+- `add()`: Añadir/incrementar producto con validación de stock
+- `updateQuantity()`: Actualizar cantidad con validación
+- `remove()`: Eliminar producto individual
+- `clear()`: Vaciar carrito completo
+- `getCartCount()`: Contador para navbar (método estático)
+
+**Rutas del Carrito:**
+```php
+GET    /cart                   → Ver carrito
+POST   /cart/add/{product}     → Añadir producto
+PATCH  /cart/update/{cartItem} → Actualizar cantidad
+DELETE /cart/remove/{cartItem} → Eliminar producto
+DELETE /cart/clear             → Vaciar carrito
+```
+
+Todas protegidas con middleware `auth`.
+
+---
+
 ## 📱 Navegación Dinámica
 
 El sistema ahora muestra diferentes opciones según el estado de autenticación:
@@ -385,6 +516,7 @@ El sistema ahora muestra diferentes opciones según el estado de autenticación:
 **Usuario Autenticado:**
 - Icono de usuario en header → Dropdown con nombre y opciones
 - Navbar → Dropdown con nombre, "Mis Pedidos" y "Cerrar Sesión"
-- Acceso al carrito de compras (próximamente funcional)
+- **Icono de carrito con contador** (muestra número de items)
+- Acceso completo al carrito de compras
 
 ---
