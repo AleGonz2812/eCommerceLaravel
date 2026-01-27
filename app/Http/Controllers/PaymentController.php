@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
 use App\Models\PaymentConfirmation;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use App\Mail\PaymentConfirmationMail;
 use App\Mail\PurchaseKeysEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Stripe\Stripe;
@@ -88,18 +92,18 @@ class PaymentController extends Controller
         $paymentSuccess = $this->simulatePayment($request->card_number);
 
         if ($paymentSuccess) {
-            // Reducir el stock de cada producto
-            foreach ($cartItems as $item) {
-                $product = $item->product;
-                $product->stock -= $item->quantity;
-                $product->save();
-            }
+            // Crear el pedido en la base de datos
+            $order = $this->createOrder($cartItems, $total);
+
+            // Enviar correo con las keys
+            $this->sendPurchaseEmail($order);
 
             // Vaciar el carrito
             CartItem::where('user_id', auth()->id())->delete();
 
             return redirect()->route('payment.success')
-                ->with('success', 'Pago procesado correctamente');
+                ->with('success', 'Pago procesado correctamente')
+                ->with('order_id', $order->id);
         }
 
         return back()->with('error', 'Error al procesar el pago. Intenta nuevamente.');
@@ -181,32 +185,11 @@ class PaymentController extends Controller
                 ->with('error', 'Tu carrito está vacío');
         }
 
-        // Reducir el stock de cada producto
-        foreach ($cartItems as $item) {
-            $product = $item->product;
-            $product->stock -= $item->quantity;
-            $product->save();
-        }
-
-        // Preparar datos para el correo de keys
-        $purchaseData = [
-            'orderId' => strtoupper(Str::random(8)),
-            'userName' => auth()->user()->name,
-            'total' => $paymentConfirmation->amount,
-            'items' => []
-        ];
-
-        foreach ($cartItems as $item) {
-            $purchaseData['items'][] = [
-                'name' => $item->product->name,
-                'quantity' => $item->quantity,
-                'price' => $item->product->price,
-                'key' => $this->generateKey($item->product->name)
-            ];
-        }
+        // Crear el pedido en la base de datos
+        $order = $this->createOrder($cartItems, $paymentConfirmation->amount, $paymentConfirmation->user_id);
 
         // Enviar correo con las keys
-        Mail::to(auth()->user()->email)->send(new PurchaseKeysEmail($purchaseData));
+        $this->sendPurchaseEmail($order);
 
         // Vaciar el carrito
         CartItem::where('user_id', $paymentConfirmation->user_id)->delete();
@@ -287,6 +270,11 @@ class PaymentController extends Controller
      */
     private function generateKey($productName)
     {
+        // Verificar si es un producto "Mystery Key"
+        if (stripos($productName, 'mystery') !== false) {
+            return $this->generateMysteryKey();
+        }
+
         // Generar una key ficticia basada en el formato típico de keys de juegos
         // Formato: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
         $segments = [];
@@ -294,5 +282,113 @@ class PaymentController extends Controller
             $segments[] = strtoupper(Str::random(5));
         }
         return implode('-', $segments);
+    }
+
+    /**
+     * Generate Mystery Key - Random Steam game key
+     */
+    private function generateMysteryKey()
+    {
+        // Lista de juegos populares de Steam para Mystery Keys
+        $mysteryGames = [
+            'Cyberpunk 2077',
+            'The Witcher 3: Wild Hunt',
+            'Red Dead Redemption 2',
+            'Elden Ring',
+            'God of War',
+            'Hogwarts Legacy',
+            'Baldur\'s Gate 3',
+            'Starfield',
+            'Street Fighter 6',
+            'Resident Evil 4 Remake',
+            'Dead Space Remake',
+            'Atomic Heart',
+            'Hades',
+            'Hollow Knight',
+            'Stardew Valley',
+            'Terraria',
+            'Dead Cells',
+            'Celeste',
+            'Undertale',
+            'Portal 2',
+        ];
+
+        // Seleccionar un juego aleatorio
+        $randomGame = $mysteryGames[array_rand($mysteryGames)];
+
+        // Generar key para ese juego
+        $segments = [];
+        for ($i = 0; $i < 5; $i++) {
+            $segments[] = strtoupper(Str::random(5));
+        }
+        $key = implode('-', $segments);
+
+        // Retornar con el nombre del juego revelado
+        return $key . ' [' . $randomGame . ']';
+    }
+
+    /**
+     * Create order in database
+     */
+    private function createOrder($cartItems, $total, $userId = null)
+    {
+        return DB::transaction(function () use ($cartItems, $total, $userId) {
+            // Crear el pedido
+            $order = Order::create([
+                'user_id' => $userId ?? auth()->id(),
+                'order_number' => Order::generateOrderNumber(),
+                'total' => $total,
+                'status' => 'completed',
+            ]);
+
+            // Crear los items del pedido
+            foreach ($cartItems as $item) {
+                $product = $item->product;
+
+                // Reducir el stock
+                $product->stock -= $item->quantity;
+                $product->save();
+
+                // Generar key para el producto
+                $productKey = $this->generateKey($product->name);
+
+                // Crear el item del pedido
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'product_name' => $product->name,
+                    'price' => $product->price,
+                    'quantity' => $item->quantity,
+                    'subtotal' => $product->price * $item->quantity,
+                    'product_key' => $productKey,
+                ]);
+            }
+
+            return $order;
+        });
+    }
+
+    /**
+     * Send purchase email with keys
+     */
+    private function sendPurchaseEmail($order)
+    {
+        $purchaseData = [
+            'orderId' => $order->order_number,
+            'userName' => $order->user->name,
+            'total' => $order->total,
+            'items' => []
+        ];
+
+        foreach ($order->items as $item) {
+            $purchaseData['items'][] = [
+                'name' => $item->product_name,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+                'key' => $item->product_key
+            ];
+        }
+
+        Mail::to($order->user->email)->send(new PurchaseKeysEmail($purchaseData));
     }
 }

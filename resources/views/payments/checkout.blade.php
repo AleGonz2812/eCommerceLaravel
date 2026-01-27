@@ -29,15 +29,15 @@
                             <tr>
                                 <td>{{ $item->product->name }}</td>
                                 <td>{{ $item->quantity }}</td>
-                                <td>€{{ number_format($item->product->price, 2) }}</td>
-                                <td>€{{ number_format($item->product->price * $item->quantity, 2) }}</td>
+                                <td>{{ number_format($item->product->price, 2) }} €</td>
+                                <td>{{ number_format($item->product->price * $item->quantity, 2) }} €</td>
                             </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th colspan="3" class="text-end">Total:</th>
-                                <th>€{{ number_format($total, 2) }}</th>
+                                <th>{{ number_format($total, 2) }} €</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -96,7 +96,7 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                Pagar €{{ number_format($total, 2) }}
+                                Pagar {{ number_format($total, 2) }} €
                             </button>
                             <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary">
                                 Volver al Carrito

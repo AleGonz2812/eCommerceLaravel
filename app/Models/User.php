@@ -55,12 +55,11 @@ class User extends Authenticatable
 
     /**
      * Relación: Un usuario puede tener muchos pedidos
-     * (Se implementará en NIVEL EXPERTO)
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    // public function orders()
-    // {
-    //     return $this->hasMany(Order::class);
-    // }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

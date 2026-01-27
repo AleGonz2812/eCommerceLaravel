@@ -2,19 +2,18 @@
 
 eCommerce tipo G2A para venta de juegos, suscripciones, keys y productos digitales.
 
-**Estado:** ✅ NIVEL INTERMEDIO COMPLETADO
+**Estado:** ✅ NIVEL EXPERTO COMPLETADO
 
 ---
 
 ## 📋 Descripción del Proyecto
 
-Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplicando la estructura MVC con **Blade** (vistas) y **Eloquent** (ORM). Sistema de catálogo de productos digitales con filtrado por categorías, búsqueda, gestión de productos y **carrito de compras funcional**.
+Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplicando la estructura MVC con **Blade** (vistas) y **Eloquent** (ORM). Sistema completo de comercio electrónico con catálogo de productos digitales, carrito de compras, procesamiento de pagos y **sistema de pedidos con generación de keys de activación**.
 
 ### Características Implementadas
 
 - ✅ Sistema de categorías y productos
-- ✅ Búsqueda de productos
-- ✅ Filtrado por categorías
+- ✅ Búsqueda y filtrado avanzado
 - ✅ Vista de catálogo con paginación
 - ✅ Ficha detallada de productos
 - ✅ Productos destacados en página principal
@@ -25,17 +24,22 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ **Gestión de sesiones de usuario**
 - ✅ **Rutas protegidas con middleware**
 - ✅ **Carrito de compras completo**
-- ✅ **Añadir/Eliminar productos del carrito**
-- ✅ **Control de cantidades y stock**
-- ✅ **Cálculo de subtotales, IVA y total**
-- ✅ **Contador de carrito en navbar**
+- ✅ **Control de cantidades y stock en tiempo real**
+- ✅ **Proceso de checkout con validación de tarjeta**
+- ✅ **Sistema de pedidos (orders, order_items)**
+- ✅ **Generación automática de keys de activación**
+- ✅ **Mystery Keys aleatorias de Steam**
+- ✅ **Historial de pedidos del usuario**
+- ✅ **Vista detallada de pedidos con keys copiables**
+- ✅ **Confirmación de pago por email para compras >100€**
 - ✅ **Gestión de imágenes con Storage**
+- ✅ **Transacciones atómicas en BD**
 
 ### Estructura MVC
 
-- **Modelos**: Product, Category, User, CartItem
-- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías, Auth (Login/Registro), **Carrito**
-- **Controladores**: HomeController, ProductController, CategoryController, **CartController**, AuthController
+- **Modelos**: Product, Category, User, CartItem, Order, OrderItem, PaymentConfirmation
+- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías, Auth, Carrito, **Checkout, Pedidos, Historial**
+- **Controladores**: HomeController, ProductController, CategoryController, CartController, AuthController, **PaymentController, OrderController**
 
 ---
 
@@ -62,17 +66,33 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ **Añadir y eliminar productos del carrito**
 - ✅ **Actualizar cantidades de productos**
 - ✅ **Vaciar carrito completo**
-- ✅ **Cálculo de subtotal, IVA y total**
+- ✅ **Cálculo de subtotal y total**
 - ✅ **Control de stock en tiempo real**
 - ✅ **Validación de cantidades máximas**
-- ✅ **Contador de items en navbar**
+- ✅ **Contador de items dinámico**
 - ✅ **Gestión de imágenes con Storage Link**
 
-### ⏳ NIVEL EXPERTO - PENDIENTE
-- Sistema de pedidos (orders, order_items)
-- Proceso de checkout completo
-- Historial de pedidos
-- Panel de administración
+### ✅ NIVEL EXPERTO - COMPLETADO
+- ✅ **Sistema de pedidos (orders, order_items)**
+- ✅ **Proceso de checkout completo con simulación de pago**
+- ✅ **Generación automática de keys de activación**
+- ✅ **Mystery Keys aleatorias de Steam (20 juegos)**
+- ✅ **Historial de pedidos del usuario con paginación**
+- ✅ **Vista detallada de pedidos con keys copiables**
+- ✅ **Confirmación por email para compras >100€**
+- ✅ **Envío de keys por email**
+- ✅ **Transacciones atómicas (rollback automático)**
+- ✅ **Reducción de stock tras compra**
+- ✅ **Número de pedido único generado automáticamente**
+- ✅ **Estados de pedido (completed, pending, cancelled)**
+
+### 🔜 FUTURAS MEJORAS
+- Panel de administración (CRUD de productos y categorías)
+- Integración con pasarela de pago real (Stripe/PayPal)
+- Sistema de reseñas y valoraciones
+- Wishlist / Lista de deseos
+- Cupones de descuento
+- Dashboard de analytics para admin
 
 ---
 
@@ -151,7 +171,7 @@ php artisan migrate:fresh --seed
 **Resultado esperado:**
 - ✅ 5 categorías creadas
 - ✅ 23 productos creados
-- ✅ Tablas: users, categories, products, cart_items, failed_jobs, password_resets, personal_access_tokens
+- ✅ Tablas: users, categories, products, cart_items, orders, order_items, payment_confirmations, failed_jobs, password_resets, personal_access_tokens
 
 ### 8️ Crear enlace simbólico para imágenes
 
@@ -210,11 +230,16 @@ eCommerceLaravel/
 │   │   │   ├── ProductController.php       # Listado, búsqueda, detalle
 │   │   │   ├── CategoryController.php      # Filtrado por categoría
 │   │   │   ├── AuthController.php          # Login, Registro, Logout
-│   │   │   └── CartController.php          # Carrito completo
+│   │   │   ├── CartController.php          # Carrito completo
+│   │   │   ├── PaymentController.php       # Checkout y procesamiento de pagos
+│   │   │   └── OrderController.php         # Historial y detalle de pedidos
 │   │   └── ViewComposers/
 │   │       └── NavigationComposer.php      # Comparte categorías globalmente
 │   ├── Models/
 │   │   ├── Category.php                    # Modelo de categorías
+│   │   ├── Order.php                       # Modelo de pedidos
+│   │   ├── OrderItem.php                   # Modelo de items de pedidos
+│   │   ├── PaymentConfirmation.php         # Modelo de confirmaciones de pago
 │   │   ├── Product.php                     # Modelo de productos
 │   │   ├── CartItem.php                    # Modelo de items del carrito
 │   │   └── User.php                        # Modelo de usuarios
@@ -222,7 +247,10 @@ eCommerceLaravel/
 │       └── AppServiceProvider.php          # Registro de ViewComposer
 ├── database/
 │   ├── migrations/
-│   │   ├── create_users_table.php          # Tabla de usuarios
+│   │   ├── create_cart_items_table.php     # Tabla de carrito
+│   │   ├── create_orders_table.php         # Tabla de pedidos
+│   │   ├── create_order_items_table.php    # Tabla de items de pedidos
+│   │   └── create_payment_confirmations_table.php  # Confirmaciones >100€s
 │   │   ├── create_categories_table.php
 │   │   ├── create_products_table.php
 │   │   └── create_cart_items_table.php     # Tabla de carrito
@@ -239,7 +267,15 @@ eCommerceLaravel/
 │       ├── partials/
 │       │   ├── header.blade.php            # Cabecera
 │       │   ├── navbar.blade.php            # Navegación
-│       │   └── footer.blade.php            # Pie de página
+│       │   └ayments/
+│       │   ├── checkout.blade.php          # Formulario de pago
+│       │   ├── success.blade.php           # Pago exitoso
+│       │   ├── pending.blade.php           # Pendiente de confirmación
+│       │   └── confirm.blade.php           # Confirmación de pago
+│       ├── orders/
+│       │   ├── index.blade.php             # Historial de pedidos
+│       │   └── show.blade.php              # Detalle de pedido con keys
+│       ├── p── footer.blade.php            # Pie de página
 │       ├── auth/
 │       │   ├── login.blade.php             # Formulario de login
 │       │   └── register.blade.php          # Formulario de registro

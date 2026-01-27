@@ -20,13 +20,25 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    
+                    @if(session('order_id'))
+                        <div class="alert alert-info">
+                            <i class="bi bi-envelope-check"></i>
+                            <strong>Se ha enviado un email</strong> con tus keys de activación.
+                        </div>
+                    @endif
 
                     <div class="d-grid gap-2 mt-4">
-                        <a href="{{ route('home') }}" class="btn btn-primary">
-                            Continuar Comprando
+                        @if(session('order_id'))
+                            <a href="{{ route('orders.show', session('order_id')) }}" class="btn btn-success">
+                                <i class="bi bi-receipt"></i> Ver mi Pedido y Keys
+                            </a>
+                        @endif
+                        <a href="{{ route('orders.index') }}" class="btn btn-primary">
+                            <i class="bi bi-bag-check"></i> Ver Todos mis Pedidos
                         </a>
-                        <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">
-                            Ver Productos
+                        <a href="{{ route('home') }}" class="btn btn-outline-secondary">
+                            Continuar Comprando
                         </a>
                     </div>
                 </div>

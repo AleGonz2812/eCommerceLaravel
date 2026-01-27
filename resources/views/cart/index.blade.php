@@ -64,7 +64,7 @@
                                                     
                                                     <!-- Precio unitario -->
                                                     <td class="align-middle text-center">
-                                        <strong>€{{ number_format($item->price, 2) }}</strong>
+                                        <strong>{{ number_format($item->price, 2) }} €</strong>
                                                     <!-- Control de cantidad -->
                                                     <td class="align-middle">
                                                         <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex justify-content-center align-items-center gap-2">
@@ -84,7 +84,7 @@
                                                     <!-- Subtotal -->
                                                     <td class="align-middle text-end">
                                                         <strong class="text-primary">
-                                            €{{ number_format($item->price * $item->quantity, 2) }}
+                                            {{ number_format($item->price * $item->quantity, 2) }} €
                                                     <!-- Botón eliminar -->
                                                     <td class="align-middle text-center">
                                                         <form action="{{ route('cart.remove', $item->id) }}" method="POST">
@@ -125,7 +125,7 @@
                                 <!-- Total -->
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Total ({{ $cartItems->sum('quantity') }} productos):</span>
-                                    <strong>€{{ number_format($total, 2) }}</strong>
+                                    <strong>{{ number_format($total, 2) }} €</strong>
                                 </div>
 
                                 <hr>
@@ -134,7 +134,7 @@
                                 <div class="d-flex justify-content-between mb-3">
                                     <h5 class="mb-0">Total a Pagar:</h5>
                                     <h5 class="mb-0 text-primary">
-                                        €{{ number_format($total, 2) }}
+                                        {{ number_format($total, 2) }} €
                                     </h5>
                                 </div>
 

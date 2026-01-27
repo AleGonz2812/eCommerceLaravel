@@ -71,10 +71,10 @@
     <div class="content">
         <h2>Hola, {{ $paymentConfirmation->user->name }}!</h2>
         
-        <p>Has iniciado una compra que supera los €100. Por seguridad, necesitamos que confirmes esta transacción.</p>
+        <p>Has iniciado una compra que supera los 100 €. Por seguridad, necesitamos que confirmes esta transacción.</p>
         
         <div class="amount">
-            €{{ number_format($paymentConfirmation->amount, 2) }}
+            {{ number_format($paymentConfirmation->amount, 2) }} €
         </div>
         
         <div class="center">
