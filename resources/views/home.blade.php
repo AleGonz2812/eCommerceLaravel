@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'MiTienda - Productos Digitales')
+@section('title', 'PixelPlay - Productos Digitales')
 
 @section('content')
 <div class="container mt-4">
@@ -8,7 +8,7 @@
     <div class="row mb-5">
         <div class="col-12">
             <div class="p-5 bg-primary text-white rounded-3 text-center hero-section">
-                <h1 class="display-4 fw-bold">Bienvenido a MiTienda</h1>
+                <h1 class="display-4 fw-bold">Bienvenido a PixelPlay</h1>
                 <p class="lead">Los mejores precios en videojuegos, suscripciones y software</p>
                 <a href="{{ route('products.index') }}" class="btn btn-light btn-lg mt-3">
                     <i class="bi bi-grid"></i> Ver Todos los Productos

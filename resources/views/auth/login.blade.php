@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Iniciar Sesión - MiTienda')
+@section('title', 'Iniciar Sesión - PixelPlay')
 
 @section('content')
 <div class="container py-5">

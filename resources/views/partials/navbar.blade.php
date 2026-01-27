@@ -18,14 +18,16 @@
                 </li>
                 
                 <!-- Categorías dinámicas (compartidas vía ViewComposer) -->
-                @foreach($categories as $category)
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('category/'.$category->slug) ? 'active' : '' }}" 
-                       href="{{ route('category.show', $category->slug) }}">
-                        {{ $category->name }}
-                    </a>
-                </li>
-                @endforeach
+                @isset($categories)
+                    @foreach($categories as $category)
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('category/'.$category->slug) ? 'active' : '' }}" 
+                           href="{{ route('category.show', $category->slug) }}">
+                            {{ $category->name }}
+                        </a>
+                    </li>
+                    @endforeach
+                @endisset
             </ul>
             
             <!-- Enlaces adicionales -->

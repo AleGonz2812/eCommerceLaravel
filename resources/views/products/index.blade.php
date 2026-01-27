@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Catálogo de Productos - MiTienda')
+@section('title', 'Catálogo de Productos - PixelPlay')
 
 @section('content')
 <div class="container mt-4">

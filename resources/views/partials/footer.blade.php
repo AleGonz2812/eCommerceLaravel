@@ -4,7 +4,7 @@
             <!-- Información de la tienda -->
             <div class="col-md-4 mb-3">
                 <h5 class="text-primary">
-                    <i class="bi bi-shop"></i> MiTienda
+                    <i class="bi bi-shop"></i> PixelPlay
                 </h5>
                 <p class="text-muted">
                     Tu tienda de confianza para productos digitales: videojuegos, suscripciones, tarjetas y software.
@@ -40,7 +40,7 @@
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start">
                 <p class="text-muted mb-0">
-                    &copy; {{ date('Y') }} MiTienda. Todos los derechos reservados.
+                    &copy; {{ date('Y') }} PixelPlay. Todos los derechos reservados.
                 </p>
             </div>
             <div class="col-md-6 text-center text-md-end">

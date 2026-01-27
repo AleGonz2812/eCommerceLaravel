@@ -4,7 +4,7 @@
             <!-- Logo -->
             <div class="col-md-3">
                 <a href="{{ url('/') }}" class="navbar-brand text-primary text-decoration-none">
-                    <i class="bi bi-shop"></i> MiTienda
+                    <i class="bi bi-shop"></i> PixelPlay
                 </a>
             </div>
             

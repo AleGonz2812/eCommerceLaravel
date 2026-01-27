@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,4 +54,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/cart/update/{cartItem}', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    
+    // Rutas de pagos
+    Route::get('/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');
+    Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/pending', [PaymentController::class, 'pending'])->name('payment.pending');
+    Route::get('/payment/confirm/{token}', [PaymentController::class, 'confirmPayment'])->name('payment.confirm');
+    Route::post('/payment/confirm/{token}', [PaymentController::class, 'processConfirmation'])->name('payment.process-confirmation');
+    Route::get('/payment/check-status', [PaymentController::class, 'checkStatus'])->name('payment.check-status');
+    Route::post('/payment/stripe/checkout', [PaymentController::class, 'createCheckoutSession'])->name('payment.stripe.checkout');
 });
