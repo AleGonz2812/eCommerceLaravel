@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $product->name . ' - MiTienda')
+@section('title', $product->name . ' - PixelPlay')
 
 @section('content')
 <div class="container mt-4">

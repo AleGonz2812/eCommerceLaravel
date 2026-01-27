@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mi Carrito - MiTienda')
+@section('title', 'Mi Carrito - PixelPlay')
 
 @section('content')
 <div class="container py-5">
@@ -140,13 +140,9 @@
 
                                 <!-- Botón de checkout -->
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-primary btn-lg" disabled>
+                                    <a href="{{ route('payment.checkout') }}" class="btn btn-primary btn-lg">
                                         <i class="bi bi-credit-card"></i> Proceder al Pago
-                                    </button>
-                                    <small class="text-muted text-center">
-                                        <i class="bi bi-info-circle"></i> 
-                                        El checkout se implementará en el Nivel Experto
-                                    </small>
+                                    </a>
                                 </div>
 
                                 <!-- Información adicional -->
