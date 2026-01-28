@@ -43,12 +43,18 @@
                 </div>
                 
                 @auth
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="bi bi-cart-plus"></i> Añadir al Carrito
-                        </button>
-                    </form>
+                    @if(!Auth::user()->isAdmin())
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-cart-plus"></i> Añadir al Carrito
+                            </button>
+                        </form>
+                    @else
+                        <div class="alert alert-info">
+                            <i class="bi bi-shield-check"></i> <strong>Modo Admin:</strong> No puedes realizar compras como admin
+                        </div>
+                    @endif
                 @else
                     <a href="{{ route('login') }}" class="btn btn-primary btn-lg">
                         <i class="bi bi-box-arrow-in-right"></i> Inicia Sesión para Comprar

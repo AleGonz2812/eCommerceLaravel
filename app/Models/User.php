@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -63,4 +64,14 @@ class User extends Authenticatable
     // {
     //     return $this->hasMany(Order::class);
     // }
+
+    /**
+     * Verificar si el usuario es administrador
+     * 
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
 }
