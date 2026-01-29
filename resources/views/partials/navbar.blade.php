@@ -29,6 +29,40 @@
                     @endforeach
                 @endisset
             </ul>
+            
+            <!-- Enlaces adicionales -->
+            <ul class="navbar-nav">
+                @auth
+                    <!-- Carrito de compras (oculto para admins) -->
+                    @if(!Auth::user()->isAdmin())
+                        <li class="nav-item">
+                            <a class="nav-link position-relative {{ request()->is('cart') ? 'active' : '' }}" href="{{ route('cart.index') }}">
+                                <i class="bi bi-cart3"></i> Carrito
+                                @php
+                                    $cartCount = \App\Http\Controllers\CartController::getCartCount();
+                                @endphp
+                                @if($cartCount > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $cartCount }}
+                                    </span>
+                                @endif
+                            </a>
+                        </li>
+                    @endif
+                @else
+                    <!-- Usuario invitado -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </a>
+                    </li>
+                @endauth
+            </ul>
         </div>
     </div>
 </nav>

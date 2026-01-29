@@ -13,6 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Crear usuario administrador
+        $this->call(AdminUserSeeder::class);
+        
         // Crear categorías primero
         $this->call(CategorySeeder::class);
         

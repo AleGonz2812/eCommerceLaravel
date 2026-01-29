@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,4 +70,10 @@ Route::middleware('auth')->group(function () {
     // Rutas de pedidos
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+});
+
+// Rutas de administración (solo para administradores)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Gestión de productos
+    Route::resource('products', AdminProductController::class);
 });
