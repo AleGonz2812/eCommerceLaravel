@@ -58,7 +58,7 @@
                                     </li>
                                 @else
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ route('orders.index') }}">
                                             <i class="bi bi-bag-check"></i> Mis Pedidos
                                         </a>
                                     </li>
@@ -90,6 +90,23 @@
                             </span>
                         </a>
                     @endif
+=======
+                    <!-- Shopping Cart -->
+                    <a href="{{ route('cart.index') }}" class="text-decoration-none text-body position-relative" title="Carrito">
+                        <i class="bi bi-cart3 fs-4"></i>
+                        @auth
+                            @php
+                                $cartCount = \App\Http\Controllers\CartController::getCartCount();
+                            @endphp
+                            @if($cartCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $cartCount }}
+                                    <span class="visually-hidden">productos en el carrito</span>
+                                </span>
+                            @endif
+                        @endauth
+                    </a>
+>>>>>>> origin/luis
                 </div>
             </div>
         </div>

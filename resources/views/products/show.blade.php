@@ -33,7 +33,7 @@
             
             <h1 class="mb-3">{{ $product->name }}</h1>
             
-            <h2 class="text-primary mb-4">€{{ number_format($product->price, 2) }}</h2>
+            <h2 class="text-primary mb-4">{{ number_format($product->price, 2) }} €</h2>
             
             <p class="lead">{{ $product->description }}</p>
             
@@ -89,7 +89,7 @@
                 
                 <div class="card-body">
                     <h5 class="card-title">{{ $related->name }}</h5>
-                    <p class="text-primary fw-bold">€{{ number_format($related->price, 2) }}</p>
+                    <p class="text-primary fw-bold">{{ number_format($related->price, 2) }} €</p>
                     <a href="{{ route('products.show', $related->slug) }}" class="btn btn-sm btn-outline-primary w-100">
                         Ver Producto
                     </a>

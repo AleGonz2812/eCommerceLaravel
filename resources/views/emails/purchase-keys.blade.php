@@ -86,7 +86,7 @@
         <div class="key-item">
             <div class="product-name">{{ $item['name'] }}</div>
             <div>Cantidad: {{ $item['quantity'] }}</div>
-            <div>Precio: €{{ number_format($item['price'], 2) }}</div>
+            <div>Precio: {{ number_format($item['price'], 2) }} €</div>
             
             <div class="key-code">
                 {{ $item['key'] }}
@@ -97,7 +97,7 @@
         @endforeach
 
         <div class="total">
-            Total pagado: €{{ number_format($purchaseData['total'], 2) }}
+            Total pagado: {{ number_format($purchaseData['total'], 2) }} €
         </div>
 
         <div class="instructions">

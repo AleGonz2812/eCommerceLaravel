@@ -14,7 +14,7 @@
                     </div>
                     
                     <h2 class="mb-3">Confirmación Requerida</h2>
-                    <p class="text-muted mb-4">Tu compra supera los €100</p>
+                    <p class="text-muted mb-4">Tu compra supera los 100 €</p>
                     
                     @if(session('info'))
                         <div class="alert alert-info">

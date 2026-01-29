@@ -80,7 +80,7 @@
                     
                     <!-- Precio y botones -->
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="h4 text-primary mb-0">€{{ number_format($product->price, 2) }}</span>
+                        <span class="h4 text-primary mb-0">{{ number_format($product->price, 2) }} €</span>
                         <div>
                             <a href="{{ route('products.show', $product->slug) }}" class="btn btn-sm btn-outline-primary">
                                 Ver más
