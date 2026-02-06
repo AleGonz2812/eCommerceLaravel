@@ -14,6 +14,7 @@ class PaymentConfirmation extends Model
     protected $fillable = [
         'user_id',
         'token',
+        'code',
         'amount',
         'confirmed',
         'expires_at',
@@ -38,6 +39,18 @@ class PaymentConfirmation extends Model
     public static function generateToken()
     {
         return Str::random(64);
+    }
+
+    /**
+     * Generate a unique 6-digit code
+     */
+    public static function generateCode()
+    {
+        do {
+            $code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        } while (self::where('code', $code)->exists());
+        
+        return $code;
     }
 
     /**

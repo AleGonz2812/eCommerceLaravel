@@ -8,6 +8,7 @@ use App\Models\PaymentConfirmation;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\DiscountCode;
 use App\Mail\PaymentConfirmationMail;
 use App\Mail\PurchaseKeysEmail;
 use Illuminate\Support\Facades\Mail;
@@ -55,6 +56,8 @@ class PaymentController extends Controller
             'card_name' => 'required|string|max:255',
             'expiry_date' => 'required|regex:/^\d{2}\/\d{2}$/',
             'cvv' => 'required|digits:3',
+            'discount_percentage' => 'nullable|integer|min:0|max:100',
+            'validated_code' => 'nullable|string',
         ]);
 
         $cartItems = CartItem::with('product')
@@ -70,43 +73,42 @@ class PaymentController extends Controller
             return $item->product->price * $item->quantity;
         });
 
-        // Si el total supera los 100€, requiere confirmación por correo
-        if ($total > 100) {
-            // Crear token de confirmación
-            $paymentConfirmation = PaymentConfirmation::create([
-                'user_id' => auth()->id(),
-                'token' => PaymentConfirmation::generateToken(),
-                'amount' => $total,
-                'expires_at' => Carbon::now()->addHours(24), // Expira en 24 horas
-            ]);
-
-            // Enviar correo de confirmación
-            Mail::to(auth()->user()->email)->send(new PaymentConfirmationMail($paymentConfirmation));
-
-            // Redirigir a página de pendiente
-            return redirect()->route('payment.pending')
-                ->with('info', 'Se ha enviado un correo de confirmación a ' . auth()->user()->email);
+        // Aplicar descuento si existe
+        $discountPercentage = 0;
+        $discountCodeModel = null;
+        
+        if ($request->has('validated_code') && $request->validated_code) {
+            $discountCodeModel = DiscountCode::where('code', $request->validated_code)
+                ->where('user_id', auth()->id())
+                ->first();
+            
+            if ($discountCodeModel && $discountCodeModel->isValid()) {
+                $discountPercentage = $discountCodeModel->discount_percentage;
+                $total = $total - ($total * ($discountPercentage / 100));
+            }
         }
 
-        // Si es menor a 100€, procesar directamente
-        $paymentSuccess = $this->simulatePayment($request->card_number);
+        // Requiere confirmación por correo siempre
+        // Crear token de confirmación
+        $paymentConfirmation = PaymentConfirmation::create([
+            'user_id' => auth()->id(),
+            'token' => PaymentConfirmation::generateToken(),
+            'code' => PaymentConfirmation::generateCode(),
+            'amount' => $total,
+            'expires_at' => Carbon::now()->addHours(24), // Expira en 24 horas
+        ]);
 
-        if ($paymentSuccess) {
-            // Crear el pedido en la base de datos
-            $order = $this->createOrder($cartItems, $total);
-
-            // Enviar correo con las keys
-            $this->sendPurchaseEmail($order);
-
-            // Vaciar el carrito
-            CartItem::where('user_id', auth()->id())->delete();
-
-            return redirect()->route('payment.success')
-                ->with('success', 'Pago procesado correctamente')
-                ->with('order_id', $order->id);
+        // Guardar el código de descuento en sesión para usarlo después
+        if ($discountCodeModel) {
+            session(['pending_discount_code' => $discountCodeModel->id]);
         }
 
-        return back()->with('error', 'Error al procesar el pago. Intenta nuevamente.');
+        // Enviar correo de confirmación
+        Mail::to(auth()->user()->email)->send(new PaymentConfirmationMail($paymentConfirmation));
+
+        // Redirigir a página para introducir código
+        return redirect()->route('payment.enter-code')
+            ->with('info', 'Se ha enviado un código de confirmación a ' . auth()->user()->email);
     }
 
     /**
@@ -136,33 +138,30 @@ class PaymentController extends Controller
     }
 
     /**
-     * Confirm payment from email link
+     * Show page to enter confirmation code
      */
-    public function confirmPayment($token)
+    public function enterCode()
     {
-        $paymentConfirmation = PaymentConfirmation::where('token', $token)->firstOrFail();
-
-        // Verificar si ya fue confirmado
-        if ($paymentConfirmation->confirmed) {
-            return view('payments.already-confirmed');
-        }
-
-        // Verificar si expiró
-        if ($paymentConfirmation->hasExpired()) {
-            return redirect()->route('cart.index')
-                ->with('error', 'El enlace de confirmación ha expirado. Por favor, intenta realizar la compra nuevamente');
-        }
-
-        // Mostrar página de confirmación con botón
-        return view('payments.confirm', compact('paymentConfirmation'));
+        return view('payments.enter-code');
     }
 
     /**
-     * Process confirmation from mobile
+     * Verify confirmation code
      */
-    public function processConfirmation($token)
+    public function verifyCode(Request $request)
     {
-        $paymentConfirmation = PaymentConfirmation::where('token', $token)->firstOrFail();
+        $request->validate([
+            'code' => 'required|digits:6',
+        ]);
+
+        $paymentConfirmation = PaymentConfirmation::where('code', $request->code)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if (!$paymentConfirmation) {
+            return back()->withErrors(['code' => 'El código ingresado no es válido'])
+                ->withInput();
+        }
 
         // Verificar si ya fue confirmado
         if ($paymentConfirmation->confirmed) {
@@ -172,12 +171,12 @@ class PaymentController extends Controller
         // Verificar si expiró
         if ($paymentConfirmation->hasExpired()) {
             return redirect()->route('cart.index')
-                ->with('error', 'El enlace de confirmación ha expirado');
+                ->with('error', 'El código de confirmación ha expirado. Por favor, intenta realizar la compra nuevamente');
         }
 
         // Obtener items del carrito del usuario
         $cartItems = CartItem::with('product')
-            ->where('user_id', $paymentConfirmation->user_id)
+            ->where('user_id', auth()->id())
             ->get();
 
         if ($cartItems->isEmpty()) {
@@ -186,18 +185,63 @@ class PaymentController extends Controller
         }
 
         // Crear el pedido en la base de datos
-        $order = $this->createOrder($cartItems, $paymentConfirmation->amount, $paymentConfirmation->user_id);
+        $order = $this->createOrder($cartItems, $paymentConfirmation->amount);
 
         // Enviar correo con las keys
         $this->sendPurchaseEmail($order);
 
         // Vaciar el carrito
-        CartItem::where('user_id', $paymentConfirmation->user_id)->delete();
+        CartItem::where('user_id', auth()->id())->delete();
 
         // Marcar como confirmado
         $paymentConfirmation->markAsConfirmed();
 
-        return view('payments.mobile-success');
+        // Marcar el código de descuento como usado si existe
+        if (session()->has('pending_discount_code')) {
+            $discountCode = DiscountCode::find(session('pending_discount_code'));
+            if ($discountCode) {
+                $discountCode->markAsUsed();
+            }
+            session()->forget('pending_discount_code');
+        }
+
+        return redirect()->route('payment.success')
+            ->with('success', 'Pago confirmado correctamente')
+            ->with('order_id', $order->id);
+    }
+
+    /**
+     * Verify discount code (AJAX)
+     */
+    public function verifyDiscount(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        $discountCode = DiscountCode::where('code', $request->code)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if (!$discountCode) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Código no válido o no pertenece a tu cuenta'
+            ]);
+        }
+
+        if (!$discountCode->isValid()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Este código ya fue usado o ha expirado'
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'discount_percentage' => $discountCode->discount_percentage,
+            'message' => 'Código aplicado correctamente'
+        ]);
     }
 
     /**

@@ -6,9 +6,14 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Administrar Productos</h1>
-        <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Añadir Producto
-        </a>
+        <div>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary me-2">
+                <i class="bi bi-people"></i> Gestionar Usuarios
+            </a>
+            <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Añadir Producto
+            </a>
+        </div>
     </div>
 
     {{-- Tabla de productos --}}

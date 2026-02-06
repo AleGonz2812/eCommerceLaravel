@@ -36,8 +36,16 @@
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th colspan="3" class="text-end">Subtotal:</th>
+                                <th id="subtotal">{{ number_format($total, 2) }} €</th>
+                            </tr>
+                            <tr id="discount-row" style="display: none;">
+                                <th colspan="3" class="text-end text-success">Descuento:</th>
+                                <th class="text-success" id="discount-amount">-0.00 €</th>
+                            </tr>
+                            <tr>
                                 <th colspan="3" class="text-end">Total:</th>
-                                <th>{{ number_format($total, 2) }} €</th>
+                                <th id="total">{{ number_format($total, 2) }} €</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -50,8 +58,25 @@
                     <small class="text-muted">Simulación ficticia - Usa una tarjeta que termine en número par para que el pago sea exitoso</small>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('payment.process') }}" method="POST">
+                    <form action="{{ route('payment.process') }}" method="POST" id="checkout-form">
                         @csrf
+                        
+                        <!-- Código de Descuento -->
+                        <div class="card mb-4 bg-light">
+                            <div class="card-body">
+                                <h6 class="mb-3">🎁 ¿Tienes algún código promocional?</h6>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="discount_code" name="discount_code" 
+                                           placeholder="Ingresa tu código aquí" value="{{ old('discount_code') }}">
+                                    <button type="button" class="btn btn-outline-primary" id="apply-discount">
+                                        Aplicar
+                                    </button>
+                                </div>
+                                <div id="discount-message" class="mt-2"></div>
+                                <input type="hidden" id="discount_percentage" name="discount_percentage" value="0">
+                                <input type="hidden" id="validated_code" name="validated_code" value="">
+                            </div>
+                        </div>
                         
                         <div class="mb-3">
                             <label for="card_name" class="form-label">Nombre en la Tarjeta</label>
@@ -110,6 +135,54 @@
 </div>
 
 <script>
+    const baseTotal = {{ $total }};
+    let currentDiscount = 0;
+
+    // Apply discount code
+    document.getElementById('apply-discount').addEventListener('click', function() {
+        const code = document.getElementById('discount_code').value.trim();
+        const messageDiv = document.getElementById('discount-message');
+
+        if (!code) {
+            messageDiv.innerHTML = '<div class="alert alert-warning alert-sm">Por favor ingresa un código</div>';
+            return;
+        }
+
+        // Verify discount code via AJAX
+        fetch('{{ route("payment.verify-discount") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ code: code })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                currentDiscount = data.discount_percentage;
+                document.getElementById('discount_percentage').value = currentDiscount;
+                document.getElementById('validated_code').value = code;
+                
+                const discountAmount = baseTotal * (currentDiscount / 100);
+                const newTotal = baseTotal - discountAmount;
+                
+                document.getElementById('discount-row').style.display = '';
+                document.getElementById('discount-amount').textContent = '-' + discountAmount.toFixed(2) + ' €';
+                document.getElementById('total').textContent = newTotal.toFixed(2) + ' €';
+                
+                messageDiv.innerHTML = '<div class="alert alert-success alert-sm">✅ Código aplicado: ' + currentDiscount + '% de descuento</div>';
+                document.getElementById('discount_code').disabled = true;
+                this.disabled = true;
+            } else {
+                messageDiv.innerHTML = '<div class="alert alert-danger alert-sm">' + data.message + '</div>';
+            }
+        })
+        .catch(error => {
+            messageDiv.innerHTML = '<div class="alert alert-danger alert-sm">Error al verificar el código</div>';
+        });
+    });
+
     // Format card number with spaces
     document.getElementById('card_number').addEventListener('input', function(e) {
         let value = e.target.value.replace(/\s/g, '');
