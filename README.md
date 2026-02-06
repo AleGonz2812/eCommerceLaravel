@@ -2,19 +2,18 @@
 
 eCommerce tipo G2A para venta de juegos, suscripciones, keys y productos digitales.
 
-**Estado:** ✅ NIVEL INTERMEDIO COMPLETADO
+**Estado:** ✅ NIVEL EXPERTO COMPLETADO
 
 ---
 
 ## 📋 Descripción del Proyecto
 
-Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplicando la estructura MVC con **Blade** (vistas) y **Eloquent** (ORM). Sistema de catálogo de productos digitales con filtrado por categorías, búsqueda, gestión de productos y **carrito de compras funcional**.
+Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplicando la estructura MVC con **Blade** (vistas) y **Eloquent** (ORM). Sistema completo de comercio electrónico con catálogo de productos digitales, carrito de compras, procesamiento de pagos y **sistema de pedidos con generación de keys de activación**.
 
 ### Características Implementadas
 
 - ✅ Sistema de categorías y productos
-- ✅ Búsqueda de productos
-- ✅ Filtrado por categorías
+- ✅ Búsqueda y filtrado avanzado
 - ✅ Vista de catálogo con paginación
 - ✅ Ficha detallada de productos
 - ✅ Productos destacados en página principal
@@ -25,17 +24,27 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ **Gestión de sesiones de usuario**
 - ✅ **Rutas protegidas con middleware**
 - ✅ **Carrito de compras completo**
-- ✅ **Añadir/Eliminar productos del carrito**
-- ✅ **Control de cantidades y stock**
-- ✅ **Cálculo de subtotales, IVA y total**
-- ✅ **Contador de carrito en navbar**
+- ✅ **Control de cantidades y stock en tiempo real**
+- ✅ **Proceso de checkout con validación de tarjeta**
+- ✅ **Sistema de pedidos (orders, order_items)**
+- ✅ **Generación automática de keys de activación**
+- ✅ **Mystery Keys aleatorias de Steam**
+- ✅ **Historial de pedidos del usuario**
+- ✅ **Vista detallada de pedidos con keys copiables**
+- ✅ **Confirmación de pago por email para compras >100€**
 - ✅ **Gestión de imágenes con Storage**
+- ✅ **Panel de Administración de Productos**
+- ✅ **CRUD completo de productos (crear, leer, editar, eliminar)**
+- ✅ **Middleware de autorización para admins**
+- ✅ **Modal de confirmación estético para eliminar**
+- ✅ **Restricción de compra para administradores**
+- ✅ **Transacciones atómicas en BD**
 
 ### Estructura MVC
 
-- **Modelos**: Product, Category, User, CartItem
-- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías, Auth (Login/Registro), **Carrito**
-- **Controladores**: HomeController, ProductController, CategoryController, **CartController**, AuthController
+- **Modelos**: Product, Category, User, CartItem, Order, OrderItem, PaymentConfirmation
+- **Vistas**: Layout base, Home, Catálogo, Ficha de producto, Categorías, Auth (Login/Registro), Carrito, **Admin (Listar, Crear, Editar productos)**, **Checkout, Pedidos, Historial**
+- **Controladores**: HomeController, ProductController, CategoryController, CartController, AuthController, **Admin\ProductController**, **PaymentController, OrderController**
 
 ---
 
@@ -62,17 +71,53 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 - ✅ **Añadir y eliminar productos del carrito**
 - ✅ **Actualizar cantidades de productos**
 - ✅ **Vaciar carrito completo**
-- ✅ **Cálculo de subtotal, IVA y total**
+- ✅ **Cálculo de subtotal y total**
 - ✅ **Control de stock en tiempo real**
 - ✅ **Validación de cantidades máximas**
-- ✅ **Contador de items en navbar**
+- ✅ **Contador de items dinámico**
 - ✅ **Gestión de imágenes con Storage Link**
 
-### ⏳ NIVEL EXPERTO - PENDIENTE
-- Sistema de pedidos (orders, order_items)
+### ✅ NIVEL EXPERTO - COMPLETADO
+- ✅ **Panel de Administración de Productos (CREATE, READ, UPDATE, DELETE)**
+- ✅ **Autenticación con rol de administrador (is_admin)**
+- ✅ **Middleware de protección para rutas admin**
+- ✅ **Vistas Admin: Listar, Crear, Editar productos**
+- ✅ **Modal de confirmación para eliminar productos**
+- ✅ **Generación automática de slug desde nombre**
+- ✅ **Validación de imágenes y almacenamiento en Storage**
+- ✅ **Restricción de compras para administradores**
+- ✅ **Paginación mejorada con Bootstrap Icons**
+- ✅ **Sistema de pedidos (orders, order_items)**
+- ✅ **Generación automática de keys de activación**
+- ✅ **Proceso de checkout completo**
+- ✅ **Historial de pedidos**
+- ✅ **Confirmación de pago por email**
 - Proceso de checkout completo
 - Historial de pedidos
-- Panel de administración
+- Panel de analytics
+=======
+### ✅ NIVEL EXPERTO - COMPLETADO
+- ✅ **Sistema de pedidos (orders, order_items)**
+- ✅ **Proceso de checkout completo con simulación de pago**
+- ✅ **Generación automática de keys de activación**
+- ✅ **Mystery Keys aleatorias de Steam (20 juegos)**
+- ✅ **Historial de pedidos del usuario con paginación**
+- ✅ **Vista detallada de pedidos con keys copiables**
+- ✅ **Confirmación por email para compras >100€**
+- ✅ **Envío de keys por email**
+- ✅ **Transacciones atómicas (rollback automático)**
+- ✅ **Reducción de stock tras compra**
+- ✅ **Número de pedido único generado automáticamente**
+- ✅ **Estados de pedido (completed, pending, cancelled)**
+
+### 🔜 FUTURAS MEJORAS
+- Panel de administración (CRUD de productos y categorías)
+- Integración con pasarela de pago real (Stripe/PayPal)
+- Sistema de reseñas y valoraciones
+- Wishlist / Lista de deseos
+- Cupones de descuento
+- Dashboard de analytics para admin
+>>>>>>> origin/luis
 
 ---
 
@@ -115,7 +160,7 @@ copy .env.example .env
 cp .env.example .env
 ```
 
-Luego genera la clave de la aplicación:
+**Luego genera la clave de la aplicación:**
 ```bash
 php artisan key:generate
 ```
@@ -151,7 +196,7 @@ php artisan migrate:fresh --seed
 **Resultado esperado:**
 - ✅ 5 categorías creadas
 - ✅ 23 productos creados
-- ✅ Tablas: users, categories, products, cart_items, failed_jobs, password_resets, personal_access_tokens
+- ✅ Tablas: users, categories, products, cart_items, orders, order_items, payment_confirmations, failed_jobs, password_resets, personal_access_tokens
 
 ### 8️ Crear enlace simbólico para imágenes
 
@@ -210,19 +255,34 @@ eCommerceLaravel/
 │   │   │   ├── ProductController.php       # Listado, búsqueda, detalle
 │   │   │   ├── CategoryController.php      # Filtrado por categoría
 │   │   │   ├── AuthController.php          # Login, Registro, Logout
-│   │   │   └── CartController.php          # Carrito completo
+│   │   │   ├── CartController.php          # Carrito completo
+<<<<<<< HEAD
+│   │   │   └── Admin/
+│   │   │       └── ProductController.php   # CRUD de productos (admin)
+│   │   ├── Middleware/
+│   │   │   └── IsAdmin.php                 # Verifica rol de administrador
+=======
+│   │   │   ├── PaymentController.php       # Checkout y procesamiento de pagos
+│   │   │   └── OrderController.php         # Historial y detalle de pedidos
+>>>>>>> origin/luis
 │   │   └── ViewComposers/
 │   │       └── NavigationComposer.php      # Comparte categorías globalmente
 │   ├── Models/
 │   │   ├── Category.php                    # Modelo de categorías
+│   │   ├── Order.php                       # Modelo de pedidos
+│   │   ├── OrderItem.php                   # Modelo de items de pedidos
+│   │   ├── PaymentConfirmation.php         # Modelo de confirmaciones de pago
 │   │   ├── Product.php                     # Modelo de productos
 │   │   ├── CartItem.php                    # Modelo de items del carrito
-│   │   └── User.php                        # Modelo de usuarios
+│   │   └── User.php                        # Modelo de usuarios (con is_admin)
 │   └── Providers/
 │       └── AppServiceProvider.php          # Registro de ViewComposer
 ├── database/
 │   ├── migrations/
-│   │   ├── create_users_table.php          # Tabla de usuarios
+│   │   ├── create_cart_items_table.php     # Tabla de carrito
+│   │   ├── create_orders_table.php         # Tabla de pedidos
+│   │   ├── create_order_items_table.php    # Tabla de items de pedidos
+│   │   └── create_payment_confirmations_table.php  # Confirmaciones >100€s
 │   │   ├── create_categories_table.php
 │   │   ├── create_products_table.php
 │   │   └── create_cart_items_table.php     # Tabla de carrito
@@ -239,10 +299,23 @@ eCommerceLaravel/
 │       ├── partials/
 │       │   ├── header.blade.php            # Cabecera
 │       │   ├── navbar.blade.php            # Navegación
-│       │   └── footer.blade.php            # Pie de página
+│       │   └ayments/
+│       │   ├── checkout.blade.php          # Formulario de pago
+│       │   ├── success.blade.php           # Pago exitoso
+│       │   ├── pending.blade.php           # Pendiente de confirmación
+│       │   └── confirm.blade.php           # Confirmación de pago
+│       ├── orders/
+│       │   ├── index.blade.php             # Historial de pedidos
+│       │   └── show.blade.php              # Detalle de pedido con keys
+│       ├── p── footer.blade.php            # Pie de página
 │       ├── auth/
 │       │   ├── login.blade.php             # Formulario de login
 │       │   └── register.blade.php          # Formulario de registro
+│       ├── admin/
+│       │   └── products/
+│       │       ├── index.blade.php         # Listar productos (tabla)
+│       │       ├── create.blade.php        # Formulario crear producto
+│       │       └── edit.blade.php          # Formulario editar producto
 │       ├── cart/
 │       │   └── index.blade.php             # Vista del carrito
 │       ├── products/
@@ -250,6 +323,9 @@ eCommerceLaravel/
 │       │   └── show.blade.php              # Ficha de producto
 │       ├── category/
 │       │   └── show.blade.php              # Productos por categoría
+│       ├── vendor/
+│       │   └── pagination/
+│       │       └── bootstrap-5.blade.php   # Paginación personalizada
 │       └── home.blade.php                  # Página de inicio
 ├── routes/
 │   └── web.php                             # Rutas web
@@ -325,6 +401,12 @@ eCommerceLaravel/
 | `/cart/update/{cartItem}` | PATCH | Actualizar cantidad de producto (requiere auth) |
 | `/cart/remove/{cartItem}` | DELETE | Eliminar producto del carrito (requiere auth) |
 | `/cart/clear` | DELETE | Vaciar todo el carrito (requiere auth) |
+| `/admin/products` | GET | Listar productos (requiere admin) |
+| `/admin/products/create` | GET | Formulario crear producto (requiere admin) |
+| `/admin/products` | POST | Guardar nuevo producto (requiere admin) |
+| `/admin/products/{id}/edit` | GET | Formulario editar producto (requiere admin) |
+| `/admin/products/{id}` | PUT | Actualizar producto (requiere admin) |
+| `/admin/products/{id}` | DELETE | Eliminar producto (requiere admin) |
 
 ---
 
@@ -513,10 +595,251 @@ El sistema ahora muestra diferentes opciones según el estado de autenticación:
 - Icono de usuario en header → Link a Login
 - Navbar → "Iniciar Sesión" y "Registrarse"
 
-**Usuario Autenticado:**
-- Icono de usuario en header → Dropdown con nombre y opciones
-- Navbar → Dropdown con nombre, "Mis Pedidos" y "Cerrar Sesión"
+**Usuario Autenticado (Cliente):**
+- Icono de usuario en header → Dropdown con nombre, "Panel Admin" (si es admin), "Mis Pedidos" y "Cerrar Sesión"
+- Navbar → (Navbar sin opciones extras)
 - **Icono de carrito con contador** (muestra número de items)
 - Acceso completo al carrito de compras
+- Badge "Modo Admin" en productos si es administrador
+
+**Usuario Administrador:**
+- Icono de usuario en header → Dropdown con nombre, "Panel Admin" y "Cerrar Sesión"
+- No ve "Mis Pedidos" (solo para clientes)
+- **Icono de carrito NO visible**
+- Botones "Añadir al Carrito" reemplazados por badge "Modo Admin"
+- Acceso completo a `/admin/products` para CRUD
+
+---
+## ⚙️ Panel de Administración de Productos
+
+### Características Implementadas
+
+**Sistema de Roles:**
+- Campo `is_admin` en tabla `users` (boolean, default false)
+- Método `isAdmin()` en modelo User
+- Middleware `IsAdmin` para proteger rutas admin
+- Solo usuarios con `is_admin = true` pueden acceder
+
+**Interfaz de Administración:**
+- **Listar Productos:** Tabla con imagen, nombre, categoría, precio, stock, destacado y acciones
+- **Crear Producto:** Formulario completo con validación, carga de imagen y selección de categoría
+- **Editar Producto:** Formulario pre-rellenado con opción de cambiar imagen sin recargar
+- **Eliminar Producto:** Modal de confirmación estético (no alert() del navegador)
+
+**Funcionalidades Técnicas:**
+- Slug generado automáticamente desde el nombre del producto (usando Str::slug)
+- Validación de datos (nombre, descripción, precio, stock, categoría, imagen)
+- Subida segura de imágenes a `storage/app/public/products/`
+- Eliminación automática de imagen anterior al actualizar
+- Eliminación de imagen al eliminar producto
+- Paginación en lista de productos
+- Relación con categorías (desplegable en formularios)
+
+**Validaciones:**
+- Campo "Nombre": requerido, máximo 255 caracteres
+- Campo "Descripción": requerido
+- Campo "Precio": requerido, numérico, mínimo 0
+- Campo "Stock": requerido, entero, mínimo 0
+- Campo "Categoría": requerido, debe existir en BD
+- Campo "Imagen": requerido en crear, opcional en editar, formatos válidos (jpeg, png, jpg, gif), máximo 2MB
+- Campo "Destacado": checkbox boolean
+
+### Cómo Usar el Panel Admin
+
+**Acceder al Panel:**
+1. Iniciar sesión con una cuenta administrador (ej: admin@admin.com / admin123)
+2. Hacer clic en dropdown de usuario (header)
+3. Seleccionar "⚙️ Panel Admin"
+4. O acceder directamente a: `/admin/products`
+
+**Crear Producto:**
+1. En panel admin, clic en botón "➕ Añadir Producto"
+2. Rellenar todos los campos:
+   - Nombre: "Nombre del Producto"
+   - Descripción: Descripción detallada
+   - Precio: En formato decimal (ej: 29.99)
+   - Stock: Número de unidades
+   - Categoría: Seleccionar de desplegable
+   - Imagen: Subir archivo (jpeg, png, jpg, gif)
+   - Destacado: Marcar si quieres que aparezca en inicio
+3. Slug se genera automáticamente
+4. Clic en "Crear Producto"
+5. Confirmación y redirección a lista
+
+**Editar Producto:**
+1. En lista de productos, clic en botón "✏️ Editar"
+2. Formulario se carga con datos actuales
+3. Modificar los campos deseados
+4. Imagen actual se muestra (opcional cambiar)
+5. Clic en "Actualizar Producto"
+6. Confirmación y redirección a lista
+
+**Eliminar Producto:**
+1. En lista de productos, clic en botón "🗑️ Eliminar"
+2. Modal de confirmación (estético y profesional)
+3. Confirmar eliminación
+4. Producto y su imagen se eliminan de la BD y Storage
+5. Confirmación y redirección a lista
+
+### Tabla: `users` (nueva columna)
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| is_admin | BOOLEAN | Indica si el usuario es administrador (default: false) |
+
+**Migración:**
+```bash
+php artisan migrate
+```
+
+### Rutas Admin (Protegidas)
+
+| Ruta | Método | Descripción | Middleware |
+|------|--------|-------------|------------|
+| `/admin/products` | GET | Listar productos | auth, admin |
+| `/admin/products/create` | GET | Formulario crear | auth, admin |
+| `/admin/products` | POST | Guardar producto | auth, admin |
+| `/admin/products/{id}/edit` | GET | Formulario editar | auth, admin |
+| `/admin/products/{id}` | PUT | Actualizar producto | auth, admin |
+| `/admin/products/{id}` | DELETE | Eliminar producto | auth, admin |
+
+### Controlador Admin\ProductController
+
+**Métodos:**
+
+- `index()`: Lista todos los productos con paginación (12 por página)
+- `create()`: Muestra formulario de creación con categorías
+- `store()`: Valida, sube imagen y crea producto
+- `edit($id)`: Muestra formulario de edición con datos actuales
+- `update($id)`: Valida, actualiza producto y gestiona imagen
+- `destroy($id)`: Elimina producto y su imagen del Storage
+
+**Características:**
+- Eager loading de categorías para optimizar queries
+- Manejo seguro de archivos
+- Generación de slug automática
+- Timestamps de creación/actualización automáticos
+- Eager loading: `Product::with('category')`
+
+### Middleware IsAdmin
+
+Verifica dos condiciones:
+1. Usuario autenticado (`auth()->check()`)
+2. Usuario tiene rol admin (`auth()->user()->is_admin`)
+
+Si alguna falla, retorna respuesta 403 (Forbidden).
+
+**Registro en Kernel:**
+```php
+protected $routeMiddleware = [
+    // ...
+    'admin' => \App\Http\Middleware\IsAdmin::class,
+];
+```
+
+### Usuario Admin de Prueba
+
+Para acceder al panel admin:
+
+**Email:** admin@admin.com
+**Contraseña:** admin123
+
+Crear en base de datos con:
+```sql
+UPDATE users SET is_admin = 1 WHERE email = 'admin@admin.com';
+```
+
+---
+
+## 🎨 Mejoras de Interfaz Implementadas
+
+### Paginación Mejorada
+- ✅ Bootstrap 5 personalizado
+- ✅ Iconos de Bootstrap Icons (`bi-chevron-left`, `bi-chevron-right`)
+- ✅ Texto "Anterior" y "Siguiente" (responsive - oculto en móviles)
+- ✅ Centrado y responsive en todas las pantallas
+- ✅ Consistente en: Catálogo, Categorías, Admin
+
+**Configuración en AppServiceProvider:**
+```php
+Paginator::defaultView('vendor.pagination.bootstrap-5');
+Paginator::defaultSimpleView('vendor.pagination.bootstrap-5');
+```
+
+### Modal de Confirmación
+- ✅ Reemplazo de `confirm()` del navegador
+- ✅ Diseño Bootstrap 5 con fondo rojo en header
+- ✅ Muestra nombre del producto a eliminar
+- ✅ Botones "Cancelar" y "Eliminar" bien diferenciados
+- ✅ Transiciones suaves (fade)
+
+### Restricciones para Administradores
+- ✅ Carrito NO visible en navbar si es admin
+- ✅ Botones "Añadir al Carrito" reemplazados por badge "Modo Admin"
+- ✅ Opción "Mis Pedidos" NO visible en dropdown de admin
+- ✅ Aplicado en: Home, Catálogo, Categorías, Detalle de producto
+- ✅ Mensajes informativos claros
+
+---
+
+## 🔧 Comandos Importantes para Setup Admin
+
+### 1. Ejecutar Migración de is_admin
+
+```bash
+php artisan migrate
+```
+
+### 2. Publicar Vistas de Paginación (Si no está hecho)
+
+```bash
+php artisan vendor:publish --tag=laravel-pagination
+```
+
+### 3. Crear Usuario Admin Manualmente (Base de Datos)
+
+Si necesitas crear un admin directo en BD:
+
+```sql
+UPDATE users SET is_admin = 1 WHERE email = 'tu@email.com';
+```
+
+O usar tinker:
+
+```bash
+php artisan tinker
+User::where('email', 'admin@admin.com')->update(['is_admin' => true]);
+exit
+```
+
+### 4. Crear Migración para Campo is_admin (Si no está incluida)
+
+```bash
+php artisan make:migration add_is_admin_to_users_table --table=users
+```
+
+Editar el archivo generado:
+
+```php
+public function up()
+{
+    Schema::table('users', function (Blueprint $table) {
+        $table->boolean('is_admin')->default(false)->after('email');
+    });
+}
+
+public function down()
+{
+    Schema::table('users', function (Blueprint $table) {
+        $table->dropColumn('is_admin');
+    });
+}
+```
+
+Ejecutar:
+
+```bash
+php artisan migrate
+```
 
 ---

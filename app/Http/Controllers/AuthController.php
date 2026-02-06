@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\DiscountCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeLoginMail;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -84,8 +88,20 @@ class AuthController extends Controller
         // Iniciar sesión automáticamente
         Auth::login($user);
 
+        // Generar código de descuento para el nuevo usuario
+        $discountCode = DiscountCode::create([
+            'user_id' => $user->id,
+            'code' => DiscountCode::generateCode(),
+            'discount_percentage' => 10, // 10% de descuento
+            'used' => false,
+            'expires_at' => Carbon::now()->addDays(7), // Válido por 7 días
+        ]);
+
+        // Enviar correo de bienvenida con el código
+        Mail::to($user->email)->send(new WelcomeLoginMail($discountCode));
+
         return redirect()->route('home')
-            ->with('success', '¡Bienvenido ' . $user->name . '! Tu cuenta ha sido creada exitosamente.');
+            ->with('success', '¡Bienvenido ' . $user->name . '! Tu cuenta ha sido creada exitosamente. Revisa tu correo para un regalo especial 🎁');
     }
 
     /**

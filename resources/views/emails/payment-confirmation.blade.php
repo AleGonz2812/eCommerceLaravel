@@ -71,30 +71,31 @@
     <div class="content">
         <h2>Hola, {{ $paymentConfirmation->user->name }}!</h2>
         
-        <p>Has iniciado una compra que supera los €100. Por seguridad, necesitamos que confirmes esta transacción.</p>
+        <p>Has iniciado una compra que supera los 100 €. Por seguridad, necesitamos que confirmes esta transacción introduciendo el código de confirmación.</p>
         
         <div class="amount">
-            €{{ number_format($paymentConfirmation->amount, 2) }}
+            {{ number_format($paymentConfirmation->amount, 2) }} €
         </div>
         
-        <div class="center">
-            <a href="{{ $confirmUrl }}" class="button">
-                ✓ Confirmar Compra
-            </a>
+        <div style="background: #e9ecef; padding: 30px; border-radius: 10px; text-align: center; margin: 30px 0;">
+            <p style="margin: 0 0 15px 0; font-size: 18px; color: #6c757d;">Tu código de confirmación es:</p>
+            <div style="font-size: 48px; font-weight: bold; color: #0d6efd; letter-spacing: 10px; font-family: 'Courier New', monospace;">
+                {{ $paymentConfirmation->code }}
+            </div>
         </div>
         
         <div class="warning">
             <strong>⚠️ Importante:</strong>
             <ul>
-                <li>Este enlace expira en <strong>24 horas</strong></li>
+                <li>Este código expira en <strong>24 horas</strong></li>
                 <li>Solo puedes usarlo una vez</li>
                 <li>Si no reconoces esta compra, ignora este correo</li>
+                <li>No compartas este código con nadie</li>
             </ul>
         </div>
         
         <p style="margin-top: 30px; font-size: 14px; color: #6c757d;">
-            Si no puedes hacer clic en el botón, copia y pega este enlace en tu navegador:<br>
-            <a href="{{ $confirmUrl }}">{{ $confirmUrl }}</a>
+            Para completar tu compra, introduce este código en la página de confirmación de nuestra tienda.
         </p>
     </div>
     

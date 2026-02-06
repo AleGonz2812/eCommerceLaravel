@@ -37,18 +37,38 @@
                     </p>
                     
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="h4 text-primary mb-0">€{{ number_format($product->price, 2) }}</span>
+                        <span class="h4 text-primary mb-0">{{ number_format($product->price, 2) }} €</span>
                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-sm btn-outline-primary">
                             Ver más
                         </a>
                     </div>
                     
                     @if($product->stock > 0)
-                        <small class="text-success mt-2">
+                        <div class="mt-3 d-grid gap-2">
+                            @auth
+                                @if(!Auth::user()->isAdmin())
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                                            <i class="bi bi-cart-plus"></i> Añadir al Carrito
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="badge bg-secondary w-100 py-2">
+                                        <i class="bi bi-shield-check"></i> Modo Admin
+                                    </span>
+                                @endif
+                            @else
+                                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-box-arrow-in-right"></i> Inicia Sesión
+                                </a>
+                            @endauth
+                        </div>
+                        <small class="text-success mt-2 d-block">
                             <i class="bi bi-check-circle"></i> {{ $product->stock }} disponibles
                         </small>
                     @else
-                        <small class="text-danger mt-2">
+                        <small class="text-danger mt-2 d-block">
                             <i class="bi bi-x-circle"></i> Agotado
                         </small>
                     @endif

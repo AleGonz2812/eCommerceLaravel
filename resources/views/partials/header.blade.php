@@ -50,11 +50,19 @@
                                     </h6>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bi bi-bag-check"></i> Mis Pedidos
-                                    </a>
-                                </li>
+                                @if(Auth::user()->isAdmin())
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.products.index') }}">
+                                            <i class="bi bi-gear-fill"></i> Panel Admin
+                                        </a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                            <i class="bi bi-bag-check"></i> Mis Pedidos
+                                        </a>
+                                    </li>
+                                @endif
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form action="{{ route('logout') }}" method="POST">
@@ -71,15 +79,6 @@
                             <i class="bi bi-person-circle fs-4"></i>
                         </a>
                     @endauth
-                    
-                    <!-- Shopping Cart -->
-                    <a href="{{ route('cart.index') }}" class="text-decoration-none text-body position-relative" title="Carrito">
-                        <i class="bi bi-cart3 fs-4"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            0
-                            <span class="visually-hidden">productos en el carrito</span>
-                        </span>
-                    </a>
                 </div>
             </div>
         </div>

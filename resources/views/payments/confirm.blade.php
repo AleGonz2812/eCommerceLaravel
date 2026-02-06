@@ -18,7 +18,7 @@
                     <div class="alert alert-info mb-4">
                         <h4 class="mb-3">Total a pagar</h4>
                         <h1 class="display-4 text-primary">
-                            €{{ number_format($paymentConfirmation->amount, 2) }}
+                            {{ number_format($paymentConfirmation->amount, 2) }} €
                         </h1>
                     </div>
 

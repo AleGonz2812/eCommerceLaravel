@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -55,12 +56,21 @@ class User extends Authenticatable
 
     /**
      * Relación: Un usuario puede tener muchos pedidos
-     * (Se implementará en NIVEL EXPERTO)
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    // public function orders()
-    // {
-    //     return $this->hasMany(Order::class);
-    // }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Verificar si el usuario es administrador
+     * 
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
 }

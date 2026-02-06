@@ -12,7 +12,6 @@ class PaymentConfirmationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $paymentConfirmation;
-    public $confirmUrl;
 
     /**
      * Create a new message instance.
@@ -22,7 +21,6 @@ class PaymentConfirmationMail extends Mailable
     public function __construct(PaymentConfirmation $paymentConfirmation)
     {
         $this->paymentConfirmation = $paymentConfirmation;
-        $this->confirmUrl = config('app.url') . '/payment/confirm/' . $paymentConfirmation->token;
     }
 
     /**

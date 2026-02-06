@@ -33,7 +33,7 @@
             
             <h1 class="mb-3">{{ $product->name }}</h1>
             
-            <h2 class="text-primary mb-4">€{{ number_format($product->price, 2) }}</h2>
+            <h2 class="text-primary mb-4">{{ number_format($product->price, 2) }} €</h2>
             
             <p class="lead">{{ $product->description }}</p>
             
@@ -43,12 +43,18 @@
                 </div>
                 
                 @auth
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="bi bi-cart-plus"></i> Añadir al Carrito
-                        </button>
-                    </form>
+                    @if(!Auth::user()->isAdmin())
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-cart-plus"></i> Añadir al Carrito
+                            </button>
+                        </form>
+                    @else
+                        <div class="alert alert-info">
+                            <i class="bi bi-shield-check"></i> <strong>Modo Admin:</strong> No puedes realizar compras como admin
+                        </div>
+                    @endif
                 @else
                     <a href="{{ route('login') }}" class="btn btn-primary btn-lg">
                         <i class="bi bi-box-arrow-in-right"></i> Inicia Sesión para Comprar
@@ -83,7 +89,7 @@
                 
                 <div class="card-body">
                     <h5 class="card-title">{{ $related->name }}</h5>
-                    <p class="text-primary fw-bold">€{{ number_format($related->price, 2) }}</p>
+                    <p class="text-primary fw-bold">{{ number_format($related->price, 2) }} €</p>
                     <a href="{{ route('products.show', $related->slug) }}" class="btn btn-sm btn-outline-primary w-100">
                         Ver Producto
                     </a>
