@@ -14,6 +14,11 @@ class ProductController extends Controller
      */
     public function index()
     {
+        // Si es administrador, redirigir al panel de administración
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect()->route('admin.products.index');
+        }
+        
         $products = Product::with('category')
             ->paginate(12);
         
