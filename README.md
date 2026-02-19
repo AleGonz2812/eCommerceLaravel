@@ -2,43 +2,48 @@
 
 eCommerce tipo G2A para venta de juegos, suscripciones, keys y productos digitales.
 
-**Estado:** ✅ NIVEL EXPERTO COMPLETADO
+> **Documentación Técnica:** Para ver los diagramas de Entidad-Relación y Casos de Uso, consulta **[DOCUMENTACION.md](DOCUMENTACION.md)**
+> 
+> **Nota:** Para visualizar correctamente los diagramas Mermaid en la documentación:
+> - En VS Code: Abre el archivo y presiona `Ctrl+Shift+V` para ver la vista previa
+> - En GitHub: Los diagramas se renderizan automáticamente al abrir el archivo
+> - Alternativamente, usa cualquier visor de Markdown que soporte Mermaid
 
 ---
 
-## 📋 Descripción del Proyecto
+## Descripción del Proyecto
 
 Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplicando la estructura MVC con **Blade** (vistas) y **Eloquent** (ORM). Sistema completo de comercio electrónico con catálogo de productos digitales, carrito de compras, procesamiento de pagos y **sistema de pedidos con generación de keys de activación**.
 
 ### Características Implementadas
 
-- ✅ Sistema de categorías y productos
-- ✅ Búsqueda y filtrado avanzado
-- ✅ Vista de catálogo con paginación
-- ✅ Ficha detallada de productos
-- ✅ Productos destacados en página principal
-- ✅ Diseño responsive (mobile-first)
-- ✅ Modo claro/oscuro con persistencia
-- ✅ Bootstrap 5.3 + Bootstrap Icons
-- ✅ **Sistema de autenticación (Login/Registro)**
-- ✅ **Gestión de sesiones de usuario**
-- ✅ **Rutas protegidas con middleware**
-- ✅ **Carrito de compras completo**
-- ✅ **Control de cantidades y stock en tiempo real**
-- ✅ **Proceso de checkout con validación de tarjeta**
-- ✅ **Sistema de pedidos (orders, order_items)**
-- ✅ **Generación automática de keys de activación**
-- ✅ **Mystery Keys aleatorias de Steam**
-- ✅ **Historial de pedidos del usuario**
-- ✅ **Vista detallada de pedidos con keys copiables**
-- ✅ **Confirmación de pago por email para compras >100€**
-- ✅ **Gestión de imágenes con Storage**
-- ✅ **Panel de Administración de Productos**
-- ✅ **CRUD completo de productos (crear, leer, editar, eliminar)**
-- ✅ **Middleware de autorización para admins**
-- ✅ **Modal de confirmación estético para eliminar**
-- ✅ **Restricción de compra para administradores**
-- ✅ **Transacciones atómicas en BD**
+- Sistema de categorías y productos
+- Búsqueda y filtrado avanzado
+- Vista de catálogo con paginación
+- Ficha detallada de productos
+- Productos destacados en página principal
+- Diseño responsive (mobile-first)
+- Modo claro/oscuro con persistencia
+- Bootstrap 5.3 + Bootstrap Icons
+- **Sistema de autenticación (Login/Registro)**
+- **Gestión de sesiones de usuario**
+- **Rutas protegidas con middleware**
+- **Carrito de compras completo**
+- **Control de cantidades y stock en tiempo real**
+- **Proceso de checkout con validación de tarjeta**
+- **Sistema de pedidos (orders, order_items)**
+- **Generación automática de keys de activación**
+- **Mystery Keys aleatorias de Steam**
+- **Historial de pedidos del usuario**
+- **Vista detallada de pedidos con keys copiables**
+- **Confirmación de pago por email para compras >100€**
+- **Gestión de imágenes con Storage**
+- **Panel de Administración de Productos**
+- **CRUD completo de productos (crear, leer, editar, eliminar)**
+- **Middleware de autorización para admins**
+- **Modal de confirmación estético para eliminar**
+- **Restricción de compra para administradores**
+- **Transacciones atómicas en BD**
 
 ### Estructura MVC
 
@@ -48,80 +53,7 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 
 ---
 
-## 🎯 Fases del Proyecto
-
-### ✅ NIVEL BÁSICO - COMPLETADO
-- ✅ Configuración de Laravel y base de datos
-- ✅ Migraciones de `categories` y `products`
-- ✅ Modelos Category y Product con relaciones
-- ✅ Seeders con datos de prueba (5 categorías, 23 productos)
-- ✅ Layout base Blade con modo claro/oscuro
-- ✅ Vista de inicio con productos destacados
-- ✅ Catálogo completo de productos
-- ✅ Vista de ficha individual de producto
-- ✅ Filtrado por categorías
-- ✅ Sistema de búsqueda
-- ✅ **Sistema de autenticación completo**
-- ✅ **Middleware de protección de rutas**
-
-### ✅ NIVEL INTERMEDIO - COMPLETADO
-- ✅ **Autenticación de usuarios (Login/Registro)**
-- ✅ **Gestión de sesiones de usuario**
-- ✅ **Carrito de compras completo**
-- ✅ **Añadir y eliminar productos del carrito**
-- ✅ **Actualizar cantidades de productos**
-- ✅ **Vaciar carrito completo**
-- ✅ **Cálculo de subtotal y total**
-- ✅ **Control de stock en tiempo real**
-- ✅ **Validación de cantidades máximas**
-- ✅ **Contador de items dinámico**
-- ✅ **Gestión de imágenes con Storage Link**
-
-### ✅ NIVEL EXPERTO - COMPLETADO
-- ✅ **Panel de Administración de Productos (CREATE, READ, UPDATE, DELETE)**
-- ✅ **Autenticación con rol de administrador (is_admin)**
-- ✅ **Middleware de protección para rutas admin**
-- ✅ **Vistas Admin: Listar, Crear, Editar productos**
-- ✅ **Modal de confirmación para eliminar productos**
-- ✅ **Generación automática de slug desde nombre**
-- ✅ **Validación de imágenes y almacenamiento en Storage**
-- ✅ **Restricción de compras para administradores**
-- ✅ **Paginación mejorada con Bootstrap Icons**
-- ✅ **Sistema de pedidos (orders, order_items)**
-- ✅ **Generación automática de keys de activación**
-- ✅ **Proceso de checkout completo**
-- ✅ **Historial de pedidos**
-- ✅ **Confirmación de pago por email**
-- Proceso de checkout completo
-- Historial de pedidos
-- Panel de analytics
-=======
-### ✅ NIVEL EXPERTO - COMPLETADO
-- ✅ **Sistema de pedidos (orders, order_items)**
-- ✅ **Proceso de checkout completo con simulación de pago**
-- ✅ **Generación automática de keys de activación**
-- ✅ **Mystery Keys aleatorias de Steam (20 juegos)**
-- ✅ **Historial de pedidos del usuario con paginación**
-- ✅ **Vista detallada de pedidos con keys copiables**
-- ✅ **Confirmación por email para compras >100€**
-- ✅ **Envío de keys por email**
-- ✅ **Transacciones atómicas (rollback automático)**
-- ✅ **Reducción de stock tras compra**
-- ✅ **Número de pedido único generado automáticamente**
-- ✅ **Estados de pedido (completed, pending, cancelled)**
-
-### 🔜 FUTURAS MEJORAS
-- Panel de administración (CRUD de productos y categorías)
-- Integración con pasarela de pago real (Stripe/PayPal)
-- Sistema de reseñas y valoraciones
-- Wishlist / Lista de deseos
-- Cupones de descuento
-- Dashboard de analytics para admin
->>>>>>> origin/luis
-
----
-
-## 💻 Requisitos del Sistema
+## Requisitos del Sistema
 
 - **PHP** >= 8.0
 - **Composer** 
@@ -131,16 +63,16 @@ Aplicación web de comercio electrónico desarrollada con **Laravel 8**, aplican
 
 ---
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
-### 1️ Clonar el repositorio
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/AleGonz2812/eCommerceLaravel.git
 cd eCommerceLaravel
 ```
 
-### 2️ Instalar dependencias de PHP
+### 2. Instalar dependencias de PHP
 
 ```bash
 composer install
@@ -148,7 +80,7 @@ composer install
 
 **Nota:** Si no tienes Composer instalado, descárgalo desde [getcomposer.org](https://getcomposer.org/)
 
-### 3️ Configurar el archivo de entorno
+### 3. Configurar el archivo de entorno
 
 **En Windows:**
 ```bash
@@ -165,7 +97,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-### 4️ Configurar la base de datos
+### 4. Configurar la base de datos
 
 Editar el archivo `.env` y configurar:
 
@@ -179,13 +111,13 @@ DB_PASSWORD=
 ```
 
 
-### 5️ Iniciar XAMPP
+### 5. Iniciar XAMPP
 
 1. Abrir **XAMPP Control Panel**
-2. Iniciar **Apache** ✅
-3. Iniciar **MySQL** ✅
+2. Iniciar **Apache** 
+3. Iniciar **MySQL** 
 
-### 6 Ejecutar migraciones y seeders
+### 6. Ejecutar migraciones y seeders
 
 Este comando creará las tablas y llenará la base de datos con datos de prueba:
 
@@ -194,11 +126,11 @@ php artisan migrate:fresh --seed
 ```
 
 **Resultado esperado:**
-- ✅ 5 categorías creadas
-- ✅ 23 productos creados
-- ✅ Tablas: users, categories, products, cart_items, orders, order_items, payment_confirmations, failed_jobs, password_resets, personal_access_tokens
+- 5 categorías creadas
+- 23 productos creados
+- Tablas: users, categories, products, cart_items, orders, order_items, payment_confirmations, failed_jobs, password_resets, personal_access_tokens
 
-### 8️ Crear enlace simbólico para imágenes
+### 7. Crear enlace simbólico para imágenes
 
 ```bash
 php artisan storage:link
@@ -206,7 +138,7 @@ php artisan storage:link
 
 Este comando crea un enlace entre `storage/app/public` y `public/storage` para que las imágenes sean accesibles desde el navegador.
 
-### 9️ Agregar las imágenes del proyecto
+### 8. Agregar las imágenes del proyecto
 
 Coloca las imágenes en las siguientes rutas:
 
@@ -234,17 +166,17 @@ storage/app/public/products/
 - Productos: 800x1200px
 
 
-### 10 Iniciar el servidor de desarrollo
+### 9. Iniciar el servidor de desarrollo
 
 ```bash
 php artisan serve
 ```
 
-**✅ El proyecto estará disponible en:** [http://localhost:8000]
+**El proyecto estará disponible en:** [http://localhost:8000]
 
 ---
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 eCommerceLaravel/
@@ -338,53 +270,23 @@ eCommerceLaravel/
 
 ---
 
-## 🗄️ Esquema de Base de Datos
+## Modelo de Datos
 
-### Tabla: `categories`
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | BIGINT | Clave primaria |
-| name | VARCHAR(255) | Nombre de la categoría |
-| slug | VARCHAR(255) | URL amigable (único) |
-| image | VARCHAR(255) | Ruta de la imagen |
-| created_at | TIMESTAMP | Fecha de creación |
-| updated_at | TIMESTAMP | Fecha de actualización |
+Para ver el **Diagrama Entidad-Relación completo** con todas las tablas, relaciones y atributos del sistema, consulta el archivo **[DOCUMENTACION.md](DOCUMENTACION.md)**.
 
-### Tabla: `products`
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | BIGINT | Clave primaria |
-| category_id | BIGINT | FK a categories |
-| name | VARCHAR(255) | Nombre del producto |
-| slug | VARCHAR(255) | URL amigable (único) |
-| description | TEXT | Descripción del producto |
-| price | DECIMAL(10,2) | Precio |
-| image | VARCHAR(255) | Ruta de la imagen |
-| stock | INTEGER | Unidades disponibles |
-| featured | BOOLEAN | Si es destacado |
-| created_at | TIMESTAMP | Fecha de creación |
-| updated_at | TIMESTAMP | Fecha de actualización |
-
-### Tabla: `cart_items`
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | BIGINT | Clave primaria |
-| user_id | BIGINT | FK a users |
-| product_id | BIGINT | FK a products |
-| quantity | INTEGER | Cantidad de unidades |
-| price | DECIMAL(10,2) | Precio al agregar al carrito |
-| created_at | TIMESTAMP | Fecha de creación |
-| updated_at | TIMESTAMP | Fecha de actualización |
-
-**Relaciones:**
-- `categories` → `products` (1:N)
-- `users` → `cart_items` (1:N)
-- `products` → `cart_items` (1:N)
-- **Índice único:** `user_id` + `product_id` (un usuario no puede tener el mismo producto duplicado)
+El sistema utiliza las siguientes entidades principales:
+- **Users** (Usuarios y Administradores)
+- **Categories** (Categorías de productos)
+- **Products** (Productos digitales)
+- **Cart_Items** (Items del carrito)
+- **Orders** (Pedidos)
+- **Order_Items** (Items de pedidos con keys)
+- **Discount_Codes** (Códigos de descuento)
+- **Payment_Confirmations** (Confirmaciones de pago)
 
 ---
 
-## 🛣️ Rutas Disponibles
+## Rutas Disponibles
 
 | Ruta | Método | Descripción |
 |------|--------|-------------|
@@ -410,38 +312,38 @@ eCommerceLaravel/
 
 ---
 
-## 🎨 Características de la Interfaz
+## Características de la Interfaz
 
 ### Diseño Responsive
-- ✅ Mobile-first con Bootstrap 5.3
-- ✅ Grid adaptativo (12 columnas)
-- ✅ Navegación colapsable en móviles
+- Mobile-first con Bootstrap 5.3
+- Grid adaptativo (12 columnas)
+- Navegación colapsable en móviles
 
 ### Modo Claro/Oscuro
-- ✅ Toggle en el header
-- ✅ Persistencia con localStorage
-- ✅ Iconos dinámicos (sol/luna)
+- Toggle en el header
+- Persistencia con localStorage
+- Iconos dinámicos (sol/luna)
 
 ### Sistema de Autenticación
-- ✅ Formularios de login y registro con validación
-- ✅ Mensajes flash de éxito/error
-- ✅ Dropdown de usuario en navbar y header
-- ✅ Opción "Recordarme" en login
-- ✅ Protección de rutas con middleware
-- ✅ Logout seguro con token CSRF
+- Formularios de login y registro con validación
+- Mensajes flash de éxito/error
+- Dropdown de usuario en navbar y header
+- Opción "Recordarme" en login
+- Protección de rutas con middleware
+- Logout seguro con token CSRF
 
 ### Componentes
-- ✅ Cards de productos con hover effect
-- ✅ Badges de categoría y destacados
-- ✅ Sistema de paginación
-- ✅ Breadcrumbs en ficha de producto
-- ✅ Indicadores de stock (disponible/agotado)
-- ✅ Dropdowns de usuario autenticado
-- ✅ Alertas dismissibles
+- Cards de productos con hover effect
+- Badges de categoría y destacados
+- Sistema de paginación
+- Breadcrumbs en ficha de producto
+- Indicadores de stock (disponible/agotado)
+- Dropdowns de usuario autenticado
+- Alertas dismissibles
 
 ---
 
-## 🔐 Sistema de Autenticación
+## Sistema de Autenticación
 
 ### Características Implementadas
 
@@ -490,7 +392,7 @@ eCommerceLaravel/
 
 ---
 
-## � Sistema de Carrito de Compras
+## Sistema de Carrito de Compras
 
 ### Características Implementadas
 
@@ -587,7 +489,7 @@ Todas protegidas con middleware `auth`.
 
 ---
 
-## 📱 Navegación Dinámica
+## Navegación Dinámica
 
 El sistema ahora muestra diferentes opciones según el estado de autenticación:
 
@@ -610,7 +512,7 @@ El sistema ahora muestra diferentes opciones según el estado de autenticación:
 - Acceso completo a `/admin/products` para CRUD
 
 ---
-## ⚙️ Panel de Administración de Productos
+## Panel de Administración de Productos
 
 ### Características Implementadas
 
@@ -647,13 +549,13 @@ El sistema ahora muestra diferentes opciones según el estado de autenticación:
 ### Cómo Usar el Panel Admin
 
 **Acceder al Panel:**
-1. Iniciar sesión con una cuenta administrador (ej: admin@admin.com / admin123)
+1. Iniciar sesión con una cuenta administrador (ej: admin@admin.com / admin)
 2. Hacer clic en dropdown de usuario (header)
-3. Seleccionar "⚙️ Panel Admin"
+3. Seleccionar "Panel Admin"
 4. O acceder directamente a: `/admin/products`
 
 **Crear Producto:**
-1. En panel admin, clic en botón "➕ Añadir Producto"
+1. En panel admin, clic en botón "Añadir Producto"
 2. Rellenar todos los campos:
    - Nombre: "Nombre del Producto"
    - Descripción: Descripción detallada
@@ -667,7 +569,7 @@ El sistema ahora muestra diferentes opciones según el estado de autenticación:
 5. Confirmación y redirección a lista
 
 **Editar Producto:**
-1. En lista de productos, clic en botón "✏️ Editar"
+1. En lista de productos, clic en botón "Editar"
 2. Formulario se carga con datos actuales
 3. Modificar los campos deseados
 4. Imagen actual se muestra (opcional cambiar)
@@ -675,7 +577,7 @@ El sistema ahora muestra diferentes opciones según el estado de autenticación:
 6. Confirmación y redirección a lista
 
 **Eliminar Producto:**
-1. En lista de productos, clic en botón "🗑️ Eliminar"
+1. En lista de productos, clic en botón "Eliminar"
 2. Modal de confirmación (estético y profesional)
 3. Confirmar eliminación
 4. Producto y su imagen se eliminan de la BD y Storage
@@ -742,7 +644,7 @@ protected $routeMiddleware = [
 Para acceder al panel admin:
 
 **Email:** admin@admin.com
-**Contraseña:** admin123
+**Contraseña:** admin
 
 Crear en base de datos con:
 ```sql
@@ -751,14 +653,14 @@ UPDATE users SET is_admin = 1 WHERE email = 'admin@admin.com';
 
 ---
 
-## 🎨 Mejoras de Interfaz Implementadas
+## Mejoras de Interfaz Implementadas
 
 ### Paginación Mejorada
-- ✅ Bootstrap 5 personalizado
-- ✅ Iconos de Bootstrap Icons (`bi-chevron-left`, `bi-chevron-right`)
-- ✅ Texto "Anterior" y "Siguiente" (responsive - oculto en móviles)
-- ✅ Centrado y responsive en todas las pantallas
-- ✅ Consistente en: Catálogo, Categorías, Admin
+- Bootstrap 5 personalizado
+- Iconos de Bootstrap Icons (`bi-chevron-left`, `bi-chevron-right`)
+- Texto "Anterior" y "Siguiente" (responsive - oculto en móviles)
+- Centrado y responsive en todas las pantallas
+- Consistente en: Catálogo, Categorías, Admin
 
 **Configuración en AppServiceProvider:**
 ```php
@@ -767,22 +669,22 @@ Paginator::defaultSimpleView('vendor.pagination.bootstrap-5');
 ```
 
 ### Modal de Confirmación
-- ✅ Reemplazo de `confirm()` del navegador
-- ✅ Diseño Bootstrap 5 con fondo rojo en header
-- ✅ Muestra nombre del producto a eliminar
-- ✅ Botones "Cancelar" y "Eliminar" bien diferenciados
-- ✅ Transiciones suaves (fade)
+- Reemplazo de `confirm()` del navegador
+- Diseño Bootstrap 5 con fondo rojo en header
+- Muestra nombre del producto a eliminar
+- Botones "Cancelar" y "Eliminar" bien diferenciados
+- Transiciones suaves (fade)
 
 ### Restricciones para Administradores
-- ✅ Carrito NO visible en navbar si es admin
-- ✅ Botones "Añadir al Carrito" reemplazados por badge "Modo Admin"
-- ✅ Opción "Mis Pedidos" NO visible en dropdown de admin
-- ✅ Aplicado en: Home, Catálogo, Categorías, Detalle de producto
-- ✅ Mensajes informativos claros
+- Carrito NO visible en navbar si es admin
+- Botones "Añadir al Carrito" reemplazados por badge "Modo Admin"
+- Opción "Mis Pedidos" NO visible en dropdown de admin
+- Aplicado en: Home, Catálogo, Categorías, Detalle de producto
+- Mensajes informativos claros
 
 ---
 
-## 🔧 Comandos Importantes para Setup Admin
+## Comandos Importantes para Setup Admin
 
 ### 1. Ejecutar Migración de is_admin
 
