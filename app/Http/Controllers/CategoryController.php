@@ -15,6 +15,11 @@ class CategoryController extends Controller
      */
     public function show($slug)
     {
+        // Si es administrador, redirigir al panel de administración
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect()->route('admin.products.index');
+        }
+        
         $category = Category::where('slug', $slug)->firstOrFail();
         
         $products = $category->products()
